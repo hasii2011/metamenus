@@ -1,0 +1,132 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: TT\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-04-20 16:17-0300\n"
+"PO-Revision-Date: 2006-04-20 16:23-0300\n"
+"Last-Translator: E. A. Tacao <tacao@mailshack.com>\n"
+"Language-Team: English <x@y.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: UNITED KINGDOM\n"
+"X-Poedit-SourceCharset: iso-8859-1\n"
+
+#: menu_messages.py:28
+msgid "&About"
+msgstr ""
+
+#: menu_messages.py:21
+msgid "&Bar"
+msgstr ""
+
+#: menu_messages.py:25
+msgid "&Brazilian Portuguese"
+msgstr ""
+
+#: menu_messages.py:7
+msgid "&Close"
+msgstr ""
+
+#: menu_messages.py:12
+msgid "&Copy"
+msgstr ""
+
+#: menu_messages.py:10
+msgid "&Edit"
+msgstr ""
+
+#: menu_messages.py:23
+msgid "&Eggs"
+msgstr ""
+
+#: menu_messages.py:26
+msgid "&English"
+msgstr ""
+
+#: menu_messages.py:1
+msgid "&File"
+msgstr ""
+
+#: menu_messages.py:20
+msgid "&Foo"
+msgstr ""
+
+#: menu_messages.py:27
+msgid "&Help"
+msgstr ""
+
+#: menu_messages.py:24
+msgid "&Language"
+msgstr ""
+
+#: menu_messages.py:2
+msgid "&New"
+msgstr ""
+
+#: menu_messages.py:3
+msgid "&Open..."
+msgstr ""
+
+#: menu_messages.py:19
+msgid "&Options"
+msgstr ""
+
+#: menu_messages.py:13
+msgid "&Paste"
+msgstr ""
+
+#: menu_messages.py:4
+msgid "&Save"
+msgstr ""
+
+#: menu_messages.py:22
+msgid "&Spam"
+msgstr ""
+
+#: menu_messages.py:15
+msgid "All"
+msgstr ""
+
+#: menu_messages.py:8
+msgid "C&lose All"
+msgstr ""
+
+#: menu_messages.py:11
+msgid "Cu&t"
+msgstr ""
+
+#: menu_messages.py:18
+msgid "Delete"
+msgstr ""
+
+#: menu_messages.py:9
+msgid "E&xit"
+msgstr ""
+
+#: menu_messages.py:17
+msgid "Invert Selection"
+msgstr ""
+
+#: menu_messages.py:16
+msgid "None"
+msgstr ""
+
+#: menu_messages.py:6
+msgid "Publis&h"
+msgstr ""
+
+#: menu_messages.py:5
+msgid "Save &As..."
+msgstr ""
+
+#: menu_messages.py:14
+msgid "Select"
+msgstr ""
+

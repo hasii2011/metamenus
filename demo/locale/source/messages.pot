@@ -1,0 +1,130 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-06-20 14:35-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: aloha.py:30
+msgid "&About"
+msgstr ""
+
+#: aloha.py:23
+msgid "&Bar"
+msgstr ""
+
+#: aloha.py:27
+msgid "&Brazilian Portuguese"
+msgstr ""
+
+#: aloha.py:9
+msgid "&Close"
+msgstr ""
+
+#: aloha.py:14
+msgid "&Copy"
+msgstr ""
+
+#: aloha.py:12
+msgid "&Edit"
+msgstr ""
+
+#: aloha.py:25
+msgid "&Eggs"
+msgstr ""
+
+#: aloha.py:3
+msgid "&File"
+msgstr ""
+
+#: aloha.py:22
+msgid "&Foo"
+msgstr ""
+
+#: aloha.py:29
+msgid "&Help"
+msgstr ""
+
+#: aloha.py:26
+msgid "&Language"
+msgstr ""
+
+#: aloha.py:4
+msgid "&New"
+msgstr ""
+
+#: aloha.py:5
+msgid "&Open..."
+msgstr ""
+
+#: aloha.py:21
+msgid "&Options"
+msgstr ""
+
+#: aloha.py:15
+msgid "&Paste"
+msgstr ""
+
+#: aloha.py:6
+msgid "&Save"
+msgstr ""
+
+#: aloha.py:24
+msgid "&Spam"
+msgstr ""
+
+#: aloha.py:28
+msgid "&System Default"
+msgstr ""
+
+#: aloha.py:17
+msgid "All"
+msgstr ""
+
+#: aloha.py:10
+msgid "C&lose All"
+msgstr ""
+
+#: aloha.py:13
+msgid "Cu&t"
+msgstr ""
+
+#: aloha.py:20
+msgid "Delete"
+msgstr ""
+
+#: aloha.py:11
+msgid "E&xit"
+msgstr ""
+
+#: aloha.py:19
+msgid "Invert Selection"
+msgstr ""
+
+#: aloha.py:18
+msgid "None"
+msgstr ""
+
+#: aloha.py:8
+msgid "Publis&h"
+msgstr ""
+
+#: aloha.py:7
+msgid "Save &As..."
+msgstr ""
+
+#: aloha.py:16
+msgid "Select"
+msgstr ""

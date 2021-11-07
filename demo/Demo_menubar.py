@@ -1,0 +1,107 @@
+# -*- coding: utf-8 -*-
+
+# menubar used in Demo_metamenus, from the metamenus demo
+#
+# Written by E. A. Tacao <mailto@tacao.com.br>, (C) 2005... 2020
+
+#-------------------------------------------------------------------------------
+
+# Our menus are here, in this separate file, because it is a good idea to:
+#  1. Have your menus in a separate file (!) and
+#  2. Make the separate file in question to contain only your menus.
+#
+# This way you will be able to use metamenus from a command line to generate 
+# a temporary file that can be read by gettext utilities in order to create
+# a .po file with strings to be translated. See the metamenus.__doc__ for 
+# more details. And it's easier to debug.
+
+#-------------------------------------------------------------------------------
+
+# Actually it is not necessary to import wx here; we would just have to
+# replace wx objects to python objects, so that in this sample:
+#    replace wx.RED to (255, 0, 0);
+#    replace wx.ITEM_CHECK to "check";
+#    replace wx.ITEM_RADIO to "radio";
+# You may thus remove this import if your menu is in a separate file and 
+# doesn't use any wx object.
+import wx
+
+# This is used in this example to get some bitmaps.
+import Demo_images
+bmp1 = Demo_images.bmp1.GetBitmap
+bmp2 = Demo_images.bmp2.GetBitmap
+
+#-------------------------------------------------------------------------------
+
+my_menubar = \
+[
+    [
+        ['&File'],
+        ['  &New\tCtrl+N'],          
+        ['  &Open...\tCtrl+O'],
+        ['  &Save\tCtrl+S'],
+        ['  Save &As...\tCtrl+Shift+S'],
+        ['  -'],
+        ['  Publis&h\tCtrl+Shift+P'],
+        ['  -'],
+        ['  &Close\tCtrl+W'],
+        ['  C&lose All'],
+        ['  -'],
+        ['  E&xit\tAlt+X']
+    ],
+    
+    
+    #[
+        #['Edit'],
+        #['  Cut'],
+        #['  Copy'],
+        #['  Paste'],
+        #['  Select'],
+        #['    All'],
+        #['    None'],
+        #['    -'],
+        #['    Invert Selection'],
+        #['  -'],
+        #['  Delete'],
+    #],
+    
+
+    [
+        ['&Edit'],
+        ['  Cu&t\tCtrl+X'],
+        ['  &Copy\tCtrl+C'],
+        ['  &Paste\tCtrl+V'],
+        ['  Select'],
+        ['    All\tCtrl+A', {"bmpChecked": bmp1}],
+        ['    None',        {"bmpChecked": bmp2}],
+        ['    -'],
+        ['    Invert Selection'],
+        ['  -'],
+        ['  Delete\tDel',  ("information on deletion", ), {"fgColour": wx.RED}],
+    ],
+
+    [
+        ['&Options'],
+        ['  &Foo',         ("Foo statusbar text", wx.ITEM_RADIO)],
+        ['  &Bar',         ("Bar statusbar text", wx.ITEM_RADIO)],
+        ['  -'],
+        ['  &Spam',        "check"],
+        ['  &Eggs',        wx.ITEM_CHECK],
+    ],
+
+    [
+        ['&Language'],
+        ['  &System Default'],
+        ['  &Choose...'],
+    ],
+
+    [
+        ['&Help'],
+        ['  &About\tCtrl+KP_8'],
+    ]
+]
+
+
+#
+##
+### eof

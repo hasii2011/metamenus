@@ -1,0 +1,175 @@
+# metamenus history
+#
+# Written by E. A. Tacao <mailto@tacao.com.br>, (C) 2005... 2020
+#
+#
+#
+# Version 0.13: (15/09/2020)
+#    - Fixed ArtProvider hardcoded to 16x16 icons.
+#
+#    - The "bmp" kwarg, when receives a string, will now also try to find a gtk
+#      stock bitmap if it fails to find a bitmap on the art provider. E. g.,
+#      a "cdrom" value will fetch the bitmap for "gtk-cdrom". Full list here:
+#      <https://wxpython.org/Phoenix/docs/html/stock_items.html>
+#
+#    - MenuAfter/MenuBefore are now command events.
+#
+#    - Added item=attr_name to event on OnMB_after
+#
+#    - Now messages warning about methods not found on parent are not shown
+#      by default. To enable them again, change the _verbose constant to True.
+#
+#    - Tries to use unidecode on _clean() to remove accents.
+#
+# Version 0.12: (05/09/2020)
+#    - GetItemState should now return False instead of raising an error if 
+#      a tested item is not checkable. Testing on wxPython 4.1.0.
+#
+# Version 0.11: (13/06/2020)
+#    - Sintax adapted to python3 and wxPython Phoenix
+#      (e. g. Phoenix doesn't resolve wx.ITEM_CHECK as an int anymore; now it's
+#       a wx._core.ItemKind)
+#
+#    - Fix in place for Phoenix breaking the tree parsing algorithm
+#      as per https://github.com/wxWidgets/Phoenix/issues/1648  
+#      (I'm using 4.0.7p2 right now and the fix seems to be holding.)
+#
+#    - Added "bmp" as kwarg and alias to "bmpChecked" (SetBitmap), but "bmp"
+#      also accepts strings: the value passed then must be the string 
+#      representation of a wx.ArtProvider id minus the 'ART_' prefix 
+#      (e. g. "CLOSE" [or "close" -- it will be uppercase'd] if
+#      you want the art provider bitmap for wx.ART_CLOSE).
+#
+#    - Removed xaccel; it was only needed for numpad accelerators but
+#      Phoenix does them!
+#    
+#    - Renamed MenuBarEx's GetMenuState and SetMenuState methods to GetItemState
+#      and SetItemState for consistency.
+#
+# Version 0.10:
+#    - Added item=attr_name to event on OnM_after
+#
+# Version 0.09:
+#    - Removed evt.Skip() from the end of OnMB_ to avoid triggering the
+#      event twice. Used to work with previous versions of wx though.
+#
+# Version 0.08:
+#    - Changed _clean() so that it doesn't remove accentuated chars anymore;
+#      instead, it will try to 'remove' their accents.
+#
+#    - Some minor fixes.
+#
+# Version 0.07:
+#    - Applied a patch from Michele Petrazzo which now allows the values
+#      passed via the custfunc dictionary to be either callable objects
+#      or strings representing the callable objects.
+#
+# Version 0.06:
+#    - Added i18n capabilities. Running metamenus.py from the command line
+#      also creates a gettext-parseable file than can in turn be used to
+#      create .po files.
+#
+#    - Some minor syntax fixes so that this code hopefully should meet the
+#      wxPython Coding Guidelines and the wxPython Style Guide.
+#
+#    - Changed EVT_BEFOREMENU_EVENT to EVT_BEFOREMENU and 
+#      EVT_AFTERMENU_EVENT to EVT_AFTERMENU. If your app was using them, 
+#      please update it.
+#
+#    - Fixed a test into OnMB_ that would raise an error on unicode 
+#      systems; thanks to Michele Petrazzo for pointing this out.
+#
+#    - Fixed the EVT_MENU binding so that the accelerators now should work
+#      on Linux; thanks to Michele Petrazzo for pointing this out.
+#
+#    - Fixed a couple of bad names in the public methods (EnableMenuTop to
+#      EnableTopMenu, etc.) that would prevent the methods to work.
+#
+#    - Fixed a bug that would prevent checkable items to be created when
+#      only a tupleless wxItemKind was passed within a menu item.
+#
+#    - Fixed a couple of potential unicode bugs in _adjust that could arise
+#      if unicode objects were passed as menu items or help strings.
+#
+#    - Changes in _sItem: _adjust now is a method of _sItem; GetPath
+#      substituted _walkMenu/_walkMenuBar; _sItem now finds a translated
+#      label when using 18n, etc.
+#
+#    - All of the menu item strings passed to the public methods now may be
+#      in one of the following forms: (1) The full menu 'path' (e. g.,
+#      "FileSave"), (2) The prefix + the full menu 'path' (e. g.,
+#      "OnMB_FileSave"), (3) The method name passed as custfunc (e. g., if
+#      you passed {"FileSave": "onSave"} as custfunc, the string may also
+#      be "onSave").
+#
+#    - "bmpChecked" and "bmpUnchecked" options now may accept a bitmap or
+#      a callable that returns a bitmap when called. This is useful if your
+#      menu 'tree' is in another file and you import it _before_ your app 
+#      is created, since BitmapFromImage can only be used if the app is 
+#      already out there.
+#
+# Version 0.05:
+#    - Fixed the popup menu position on MenuEx.
+#
+#    - Applied a patch from Michele Petrazzo which implemented the custfunc
+#      funcionality, allowing one to choose arbitrary names for methods
+#      called on menu events.
+#
+# Version 0.04:
+#    - Changed the OnMB_, OnM_ code so that they won't shadow 
+#      AttributeErrors raised on parent's code.
+#
+#    - Add the show_title kwarg to the MenuEx constructor.
+#
+# Version 0.03:
+#   - Added support for numpad accelerators; they must be passed as 
+#     "Num x", where x may be into a [0-9] range.
+#
+#   - Added support for wx.MenuItem.Break(); if you want a menu break,
+#     now you can pass a "/" on a menu entry label.
+#
+#   - Added the EVT_BEFOREMENU_EVENT, which will be triggered right before
+#     the menu event.
+#
+#   - Those who believe that wx.UPPERCASE_STUFF_IS_UGLY 8^) now can pass
+#     "radio" instead of wx.ITEM_RADIO, "check" instead of wx.ITEM_CHECK,
+#     and "normal" (or "", or even nothing at all) instead of 
+#     wx.ITEM_NORMAL.
+#
+#   - The args syntax has been extended. The previous version allowed one 
+#     to pass either:
+#
+#          (helpString, wxItemKind)
+#       or ("", wxItemKind)
+#       or (helpString,)
+#
+#       Now its also possible to pass:
+#
+#          helpString
+#       or wxItemKind
+#       or (helpString)
+#       or (wxItemKind)
+#
+#     When you use this new style, Metamenus will check if the thing passed
+#     can be translated as an item kind (either wx.RADIO, "radio", etc.) or
+#     not, and so will try to guess what to do with the thing. Note that if
+#     you want a status bar showing something like "radio", you'll not be
+#     able to use this new style, but ("radio",) will still work for such
+#     purposes, though.
+#
+#   - xaccel, a new kwarg available in MenuBarEx, allows one to bind events
+#     to 'items' that are not actually menu items, rather methods or
+#     functions that are triggered when some key or combination of keys is
+#     pressed.
+#
+#     xaccel is a list of tuples (accel, function), where accel is a string
+#     following the accelerator syntax described in wx.Menu.Append docs and
+#     function is the function/method to be executed when the accelerator 
+#     is triggered.
+#
+#     The events will be managed in the same way as MenuBarEx events. IOW,
+#     xaccel accelerators will provide some sort of 'invisible menu items'.
+#
+# Version 0.02: severe code clean-up; accelerators for submenus now work.
+#
+# Version 0.01: initial release. (09/2005)
