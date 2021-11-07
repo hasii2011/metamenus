@@ -573,13 +573,11 @@ class MenuBarEx(MenuBar):
 
                 # ...and append their respective children.
                 for h in k.GetChildren():
-                    wxmenus = _makeMenus(wxmenus, h, k, margin,
-                                         font, i18n)
+                    wxmenus = _makeMenus(wxmenus, h, k, margin, font, i18n)
 
             # Now append these items to the top level menu.
             for h in top.GetChildren():
-                wxmenus = _makeMenus(wxmenus, h, top, margin, font,
-                                     i18n)
+                wxmenus = _makeMenus(wxmenus, h, top, margin, font, i18n)
 
             # Now append the top menu to the menu bar.
             self.Append(wxmenus[top], top.GetRealLabel(i18n))

@@ -82,8 +82,8 @@ my_menubar = \
 
     [
         ['&Options'],
-        ['  &Foo',         ("Foo statusbar text", wx.ITEM_RADIO)],
-        ['  &Bar',         ("Bar statusbar text", wx.ITEM_RADIO)],
+        ['  &Foo',         ("Foo status bar text", wx.ITEM_RADIO)],
+        ['  &Bar',         ("Bar status bar text", wx.ITEM_RADIO)],
         ['  -'],
         ['  &Spam',        "check"],
         ['  &Eggs',        wx.ITEM_CHECK],

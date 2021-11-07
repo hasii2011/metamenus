@@ -8,8 +8,8 @@ from wx import StaticLine
 from wx.adv import TaskBarIcon
 
 
-from metamenus import MenuBarEx
-from metamenus import MenuEx
+from metamenus.metamenus import MenuBarEx
+from metamenus.metamenus import MenuEx
 
 from Demo_menubar import my_menubar
 from Demo_context_menu import my_context_menu
@@ -236,6 +236,8 @@ class mmTestFrame(wx.Frame):
         # You selected About > The Universe from the menu titled "Pop this up".
         print("42")  # ditto
 
+    def OnMB_FileExit(self):
+        self.Destroy()
 
 class MyApp(wx.App):
     def OnInit(self):
