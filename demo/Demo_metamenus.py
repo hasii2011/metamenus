@@ -3,6 +3,8 @@
 import sys
 
 import wx
+from wx import Locale
+from wx import StaticLine
 from wx.adv import TaskBarIcon
 
 
@@ -87,21 +89,22 @@ class mmTestFrame(wx.Frame):
 
         # Fetch the snake again, shrink it a bit, make it a task bar icon.
         t_snake = wx.Icon(the_snake.GetImage().Scale(16, 16).ConvertToBitmap())
-        self.tbicon = tbIcon(self, t_snake)
-        self.tbicon.Bind(wx.adv.EVT_TASKBAR_LEFT_DOWN, self.OnTaskbarLeftDown)
+        self.tbIcon = tbIcon(self, t_snake)
+        self.tbIcon.Bind(wx.adv.EVT_TASKBAR_LEFT_DOWN, self.OnTaskbarLeftDown)
 
         # Not compulsory, but here we will test metamenus status messages
         self.CreateStatusBar()
-        self.SetStatusText("Well here is the statusbar")
+        self.SetStatusText("Well here is the status bar")
 
         # This creates and attaches the menu bar to this frame
         self.mb = MenuBarEx(self, my_menubar)
 
         # noinspection SpellCheckingInspection
-        # Shows how to use the custfunc arg
-        # telling to use 'onSave' instead of 'OnMB_FileSave':
-        # self.mb = MenuBarEx(self, my_menubar, custfunc={"FileSave": "onSave"})
-        
+        """
+        Shows how to use the custfunc arg
+        telling to use 'onSave' instead of 'OnMB_FileSave':
+        self.mb = MenuBarEx(self, my_menubar, custfunc={"FileSave": "onSave"})
+        """
         panel = wx.Panel(self)
 
         sizer = wx.GridBagSizer()
@@ -115,9 +118,8 @@ class mmTestFrame(wx.Frame):
         sizer.Add(self.tc, pos=(0, 0), span=(1, 4), flag=wx.EXPAND | wx.ALL,
                   border=15)
 
-        l = wx.StaticLine(panel)
-        sizer.Add(l, pos=(1, 0), span=(1, 4), flag=wx.EXPAND | wx.TOP | wx.BOTTOM,
-                  border=15)
+        staticLine: StaticLine = StaticLine(panel)
+        sizer.Add(staticLine, pos=(1, 0), span=(1, 4), flag=wx.EXPAND | wx.TOP | wx.BOTTOM, border=15)
 
         b = wx.Button(panel, wx.ID_ANY, "Is foo checked?")
         sizer.Add(b, pos=(2, 1), flag=wx.ALIGN_CENTRE)
@@ -188,19 +190,19 @@ class mmTestFrame(wx.Frame):
         evt.Skip()
 
     def OnClose(self, evt):
-        # We need to explicity destroy the TaskBarIcon object since it is not
+        # We need to explicitly destroy the TaskBarIcon object since it is not
         # a child of this frame and so closing the frame will not 'close' the
         # TaskBarIcon object automatically.
-        self.tbicon.Destroy()
+        self.tbIcon.Destroy()
 
         # Continue with your regular schedule.
         evt.Skip()
 
     def UpdateLocale(self, lang_id):
         # Shows how to do wx l10n/i18n stuff
-        l = wx.Locale(lang_id)
-        l.AddCatalogLookupPathPrefix("locale")
-        l.AddCatalog("Demo_metamenus.mo")
+        locale = Locale(lang_id)
+        locale.AddCatalogLookupPathPrefix("locale")
+        locale.AddCatalog("Demo_metamenus.mo")
 
         # metamenus l10n/i18n stuff
         self.mb.UpdateMenus()
@@ -230,7 +232,7 @@ class mmTestFrame(wx.Frame):
         dlg.ShowModal()
         dlg.Destroy()
 
-    def OnM_PopthisupAboutTheUniverse(self):
+    def OnM_PopThisUpAboutTheUniverse(self):
         # You selected About > The Universe from the menu titled "Pop this up".
         print("42")  # ditto
 
