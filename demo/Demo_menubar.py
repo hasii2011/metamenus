@@ -27,8 +27,7 @@ import Demo_images
 bmp1 = Demo_images.bmp1.GetBitmap
 bmp2 = Demo_images.bmp2.GetBitmap
 
-my_menubar = \
-[
+my_menubar = [
     [
         ['&File'],
         ['  &New\tCtrl+N'],          
@@ -68,7 +67,7 @@ my_menubar = \
     ],
 
     [
-        ['&Language']
+        ['&Language'],
         ['  &System Default'],
         ['  &Choose...'],
     ],

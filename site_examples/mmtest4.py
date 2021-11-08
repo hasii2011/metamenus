@@ -35,27 +35,26 @@
 
 
 import wx 
-from metamenus.metamenus import MenuBarEx, MenuEx
+from metamenus.metamenus import MenuBarEx
 
-#-------------------------------------------------------------------------------
 
 class MyFrame(wx.Frame):
     def __init__(self):
         wx.Frame.__init__(self, None, -1, 'testing metamenus 4')
         
-        menu =  [
+        menu = [
                     ['Options'],
                     ['  Foo',    "radio"],
                     ['  Bar',    "radio"],
                     ['  -'],
                     ['  Spam',   "check"],
                     ['  Eggs',   "check"],
-                ]
+            ]
                 
         self.mb = MenuBarEx(self, [menu])
         
         self.SetSize((224, 270))
-#-------------------------------------------------------------------------------
+
 
 class MyApp(wx.App):
     def OnInit(self):
@@ -64,13 +63,7 @@ class MyApp(wx.App):
         self.SetTopWindow(frame)
         return True
 
-#-------------------------------------------------------------------------------
 
 if __name__ == '__main__':
     app = MyApp()
     app.MainLoop()
-
-
-#
-##
-### eof

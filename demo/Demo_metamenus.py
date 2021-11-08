@@ -9,11 +9,11 @@ from wx.adv import TaskBarIcon
 
 
 from metamenus.metamenus import MenuBarEx
-from metamenus.metamenus import MenuEx
+from metamenus.MenuEx import MenuEx
 
-from Demo_menubar import my_menubar
 from Demo_context_menu import my_context_menu
 from Demo_images import the_snake
+from Demo_menubar import my_menubar
 
 # -*- coding: utf-8 -*-
 
@@ -238,6 +238,7 @@ class mmTestFrame(wx.Frame):
 
     def OnMB_FileExit(self):
         self.Destroy()
+
 
 class MyApp(wx.App):
     def OnInit(self):

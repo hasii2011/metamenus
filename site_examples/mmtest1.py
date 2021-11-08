@@ -35,7 +35,8 @@
 
 
 import wx 
-from metamenus.metamenus import MenuBarEx, MenuEx
+from metamenus.metamenus import MenuBarEx
+# from metamenus.MenuEx import MenuEx
 
 #-------------------------------------------------------------------------------
 

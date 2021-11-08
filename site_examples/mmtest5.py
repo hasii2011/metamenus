@@ -35,14 +35,14 @@
 
 
 import wx 
-from metamenus.metamenus import MenuBarEx, MenuEx
+from metamenus.metamenus import MenuBarEx
 
 
 class MyFrame(wx.Frame):
     def __init__(self):
         wx.Frame.__init__(self, None, -1, 'testing metamenus 5')
         
-        menu =  [
+        menu = [
                     ['File'],
                     ['  New',        {"bmp": "new"}],
                     ['  Open',       {"bmp": "file_open"}],
@@ -69,8 +69,3 @@ class MyApp(wx.App):
 if __name__ == '__main__':
     app = MyApp()
     app.MainLoop()
-
-
-#
-##
-### eof
