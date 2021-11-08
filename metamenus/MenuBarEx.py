@@ -125,7 +125,8 @@ class MenuBarEx(MenuBar):
                 else:
                     if _verbose:
                         print("%s not found in parent." % attr_name)
-
+            # TODO fix this
+            # noinspection PyUnboundLocalVariable
             self.OnMB_after(attr_name)
 
         except KeyError:

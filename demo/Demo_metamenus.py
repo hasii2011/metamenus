@@ -7,8 +7,7 @@ from wx import Locale
 from wx import StaticLine
 from wx.adv import TaskBarIcon
 
-
-from metamenus.metamenus import MenuBarEx
+from metamenus.MenuBarEx import MenuBarEx
 from metamenus.MenuEx import MenuEx
 
 from Demo_context_menu import my_context_menu
