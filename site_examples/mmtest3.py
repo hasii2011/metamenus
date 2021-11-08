@@ -35,15 +35,14 @@
 
 
 import wx 
-from metamenus.metamenus import MenuBarEx
+from metamenus.MenuBarEx import MenuBarEx
 
-#-------------------------------------------------------------------------------
 
 class MyFrame(wx.Frame):
     def __init__(self):
         wx.Frame.__init__(self, None, -1, 'testing metamenus 3')
         
-        menu =  [
+        menu = [
                     ['&File'],
                     ['  &New\tCtrl+N'],
                     ['  &Open\tCtrl+O'],
@@ -57,7 +56,7 @@ class MyFrame(wx.Frame):
         self.mb = MenuBarEx(self, [menu])
         
         self.SetSize((224, 270))
-#-------------------------------------------------------------------------------
+
 
 class MyApp(wx.App):
     def OnInit(self):
@@ -66,13 +65,7 @@ class MyApp(wx.App):
         self.SetTopWindow(frame)
         return True
 
-#-------------------------------------------------------------------------------
 
 if __name__ == '__main__':
     app = MyApp()
     app.MainLoop()
-
-
-#
-##
-### eof

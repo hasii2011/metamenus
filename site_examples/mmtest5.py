@@ -35,7 +35,7 @@
 
 
 import wx 
-from metamenus.metamenus import MenuBarEx
+from metamenus.MenuBarEx import MenuBarEx
 
 
 class MyFrame(wx.Frame):
