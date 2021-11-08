@@ -4,8 +4,6 @@
 #
 # Written by E. A. Tacao <mailto@tacao.com.br>, (C) 2005... 2020
 
-#-------------------------------------------------------------------------------
-
 # Our menus are here, in this separate file, because it is a good idea to:
 #  1. Have your menus in a separate file (!) and
 #  2. Make the separate file in question to contain only your menus.
@@ -14,8 +12,6 @@
 # a temporary file that can be read by gettext utilities in order to create
 # a .po file with strings to be translated. See the metamenus.__doc__ for 
 # more details. And it's easier to debug.
-
-#-------------------------------------------------------------------------------
 
 # Actually it is not necessary to import wx here; we would just have to
 # replace wx objects to python objects, so that in this sample:
@@ -30,8 +26,6 @@ import wx
 import Demo_images
 bmp1 = Demo_images.bmp1.GetBitmap
 bmp2 = Demo_images.bmp2.GetBitmap
-
-#-------------------------------------------------------------------------------
 
 my_menubar = \
 [
@@ -49,22 +43,6 @@ my_menubar = \
         ['  -'],
         ['  E&xit\tAlt+X']
     ],
-    
-    
-    #[
-        #['Edit'],
-        #['  Cut'],
-        #['  Copy'],
-        #['  Paste'],
-        #['  Select'],
-        #['    All'],
-        #['    None'],
-        #['    -'],
-        #['    Invert Selection'],
-        #['  -'],
-        #['  Delete'],
-    #],
-    
 
     [
         ['&Edit'],
@@ -77,7 +55,7 @@ my_menubar = \
         ['    -'],
         ['    Invert Selection'],
         ['  -'],
-        ['  Delete\tDel',  ("information on deletion", ), {"fgColour": wx.RED}],
+        ['  Delete\tDel',  ("Information on deletion", ), {"fgColour": wx.RED}],
     ],
 
     [
@@ -90,7 +68,7 @@ my_menubar = \
     ],
 
     [
-        ['&Language'],
+        ['&Language']
         ['  &System Default'],
         ['  &Choose...'],
     ],
@@ -100,8 +78,3 @@ my_menubar = \
         ['  &About\tCtrl+KP_8'],
     ]
 ]
-
-
-#
-##
-### eof

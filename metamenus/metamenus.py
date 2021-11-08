@@ -16,7 +16,6 @@ from wx import NullFont
 from wx import Platform
 from wx import PostEvent
 
-from wx.core import DEFAULT
 # TODO ask tacao if we can avoid using these
 # noinspection PyProtectedMember
 from wx._core import ItemKind
@@ -25,7 +24,14 @@ from wx._core import wxAssertionError
 
 from wx import NewId
 
-from wx.lib.newevent import NewCommandEvent
+# noinspection PyUnresolvedReferences
+from wx.core import DEFAULT
+
+from metamenus import use_unidecode
+from metamenus import MenuExBeforeEvent
+from metamenus import MenuExAfterEvent
+
+# from wx.lib.newevent import NewCommandEvent
 
 # -*- coding: utf-8 -*-
 
@@ -72,17 +78,17 @@ __version__ = "0.13"
 # -------------------------------------------------------------------------------
         
 
-try:
-    # noinspection PyUnresolvedReferences
-    import unidecode
-    use_unidecode = True
-except ModuleNotFoundError:
-    use_unidecode = False
-
-# Events -----------------------------------------------------------------------
-
-(MenuExBeforeEvent, EVT_BEFOREMENU) = NewCommandEvent()
-(MenuExAfterEvent,  EVT_AFTERMENU) = NewCommandEvent()
+# try:
+#     # noinspection PyUnresolvedReferences
+#     import unidecode
+#     use_unidecode = True
+# except ModuleNotFoundError:
+#     use_unidecode = False
+#
+# # Events -----------------------------------------------------------------------
+#
+# (MenuExBeforeEvent, EVT_BEFOREMENU) = NewCommandEvent()
+# (MenuExAfterEvent,  EVT_AFTERMENU) = NewCommandEvent()
 
 # Constants --------------------------------------------------------------------
 
@@ -307,6 +313,7 @@ def _process_kwargs(item, kwargs, margin, font):
             checked = kwargs["bmp"]
             if type(checked) == str:
                 try:
+                    import wx  # The eval depends on this import;  Ugh
                     ArtID = eval("wx.ART_" + checked.upper())
                     # checked = wx.ArtProvider.GetBitmap(ArtID, wx.ART_MENU)
                     checked = ArtProvider.GetBitmap(ArtID, ART_MENU)
@@ -340,6 +347,7 @@ def _process_kwargs(item, kwargs, margin, font):
     for kw, m in kwlist:
         if kw in kwargs:
             getattr(item, m)(kwargs[kw])
+
     if margin != DEFAULT:
         item.SetMarginWidth(margin)
 
@@ -377,6 +385,7 @@ def _clean(s):
     """
     
     if use_unidecode:
+        # noinspection PyUnresolvedReferences
         s = unidecode.unidecode("".join([x for x in s if x.isalnum()]))
 
     else:
