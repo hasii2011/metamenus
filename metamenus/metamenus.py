@@ -60,21 +60,6 @@ from metamenus import use_unidecode
 
 # More info on 'history' and 'README.md' files.
 
-# -------------------------------------------------------------------------------
-        
-
-# try:
-#     # noinspection PyUnresolvedReferences
-#     import unidecode
-#     use_unidecode = True
-# except ModuleNotFoundError:
-#     use_unidecode = False
-#
-# # Events -----------------------------------------------------------------------
-#
-# (MenuExBeforeEvent, EVT_BEFOREMENU) = NewCommandEvent()
-# (MenuExAfterEvent,  EVT_AFTERMENU) = NewCommandEvent()
-
 # Constants --------------------------------------------------------------------
 
 # If you rather use a different indentation level for menus,
@@ -92,7 +77,7 @@ _prefixM  = "OnM_"
 
 # If you want to print messages warning about methods not
 # found on parent, change this to True.
-_verbose = False
+_verbose = True
 
 
 class _sItem:
@@ -156,25 +141,27 @@ class _sItem:
         return params[0], tuple(args), kwargs
 
     def Update(self):
-        # Members created/updated here:
-        #
-        # label:            "&New\tCtrl+N"
-        # label_text:       "&New"
-        # tlabel:           "&Novo\tCtrl+N"     (full label translated)
-        # tlabel_text:      "&Novo"             (label text translated)
-        # acc:              "Ctrl+N"
-        #
-        # I'm not actually using all of them right now, but maybe I will...
+        # noinspection SpellCheckingInspection
+        """
+        Members created/updated here:
 
+        label:            "&New\tCtrl+N"
+        label_text:       "&New"
+        tlabel:           "&Novo\tCtrl+N"     (full label translated)
+        tlabel_text:      "&Novo"             (label text translated)
+        acc:              "Ctrl+N"
+
+        I am not actually using all of them right now, but maybe I will...
+        """
         self.label = self.params[0].strip()
         self.label_text = self.label.split("\t")[0].strip()
         label, acc = (self.label.split("\t") + [''])[:2]
-        self.tlabel_text = GetTranslation(label.strip())
+        self.tLabel_text = GetTranslation(label.strip())
         self.acc = acc.strip()
         if self.acc:
-            self.tlabel = "\t".join([self.tlabel_text, self.acc])
+            self.tLabel = "\t".join([self.tLabel_text, self.acc])
         else:
-            self.tlabel = self.tlabel_text
+            self.tLabel = self.tLabel_text
 
     def AddChild(self, Item):
         Item.parent = self
@@ -195,10 +182,10 @@ class _sItem:
         return self.label_text
 
     def GetLabelTranslation(self):
-        return self.tlabel
+        return self.tLabel
 
     def GetLabelTextTranslation(self):
-        return self.tlabel_text
+        return self.tLabel_text
 
     def GetAccelerator(self):
         return self.acc
@@ -355,10 +342,11 @@ def _evolve(a):
 
         if level > il:
             il += 1
+            # Todo fix this !!
+            # noinspection PyUnboundLocalVariable
             cur[il] = new_sItem
         elif level < il:
             il = level
-
         new_sItem = cur[il].AddChild(_sItem(params))
 
     return top
@@ -387,7 +375,7 @@ def _clean(s):
     return s
     
 
-def _makeMenus(wxmenus, h, k, margin, font, i18n):
+def _makeMenus(wxMenus, h, k, margin, font, i18n):
     """Internal use only. Creates menu items."""
 
     label = h.GetRealLabel(i18n)
@@ -395,29 +383,29 @@ def _makeMenus(wxmenus, h, k, margin, font, i18n):
     args, kwargs = h.GetParams()[1:]
 
     if h.HasChildren():
-        args = (wxmenus[h], Id, label) + args
-        item = MenuItem(*args, **{"subMenu": wxmenus[h]})
+        args = (wxMenus[h], Id, label) + args
+        item = MenuItem(*args, **{"subMenu": wxMenus[h]})
         item = _process_kwargs(item, kwargs, margin, font)
 
-        wxmenus[k].Append(item)
+        wxMenus[k].Append(item)
 
     else:
         if label == "-":
-            wxmenus[k].AppendSeparator()
+            wxMenus[k].AppendSeparator()
 
         elif label == "/":
-            wxmenus[k].Break()
+            wxMenus[k].Break()
 
         else:
-            args = (wxmenus[k], Id, label) + args
+            args = (wxMenus[k], Id, label) + args
             item = MenuItem(*args)
             item = _process_kwargs(item, kwargs, margin, font)
-            wxmenus[k].Append(item)
+            wxMenus[k].Append(item)
 
-    return wxmenus
+    return wxMenus
 
 
-class _mmprep:
+class _mmPrep:
     """
     Generates a temporary file that can be read by gettext utilities in
     order to create a .po file with strings to be translated. This class is
@@ -443,33 +431,33 @@ class _mmprep:
     def __init__(self, filename, output_file):
         """Constructor."""
 
-        print("Parsing %s.py..." % filename)
+        print(f'Parsing {filename}.py...')
 
-        exec("import %s" % filename)
+        exec(f'import {filename}')
         mod = eval(filename)
 
-        objs = []
+        listObjects = []
         for obj in dir(mod):
             if type(getattr(mod, obj)) == list:
-                objs.append(obj)
+                listObjects.append(obj)
 
         all_lines = []
-        for obj in objs:
-            gerr = False
+        for obj in listObjects:
+            gError = False
             header = ["\n# Strings for '%s':\n" % obj]
             err, lines = self.parseMenu(mod, obj)
             if not err:
-                print("OK: parsed '%s'" % obj)
+                print(f"OK: parsed '{obj}'")
                 all_lines += header + lines
             else:
                 err, lines = self.parseMenuBar(mod, obj)
                 if not err:
-                    print("OK: parsed '%s'" % obj)
+                    print(f"OK: parsed '{obj}'")
                     all_lines += header + lines
                 else:
-                    gerr = True
-            if gerr:
-                print("Warning: couldn't parse '%s'" % obj)
+                    gError = True
+            if gError:
+                print(f"Warning: could not parse '{obj}'")
 
         try:
             # f = file("%s.py" % output_file, "w")
