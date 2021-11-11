@@ -1,25 +1,19 @@
 
 from wx import ART_MENU
-from wx import EVT_MENU
 from wx import ITEM_CHECK
 from wx import ITEM_NORMAL
 from wx import ITEM_RADIO
 
 from wx import ArtProvider
 from wx import GetTranslation
-from wx import Menu
-from wx import MenuBar
 from wx import MenuItem
 from wx import NullBitmap
 from wx import NullFont
 from wx import Platform
-from wx import PostEvent
 
 # TODO ask tacao if we can avoid using these
 # noinspection PyProtectedMember
 from wx._core import ItemKind
-# noinspection PyProtectedMember
-from wx._core import wxAssertionError
 
 from wx import NewId
 
@@ -421,6 +415,7 @@ def _makeMenus(wxmenus, h, k, margin, font, i18n):
             wxmenus[k].Append(item)
 
     return wxmenus
+
 
 class _mmprep:
     """
