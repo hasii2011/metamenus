@@ -34,8 +34,11 @@ class TestConfiguration(TestBase):
     def tearDown(self):
         pass
 
-    def testName1(self):
-        pass
+    def testDefaultIndentation(self):
+
+        expectedIndentation: str = Configuration.DEFAULT_INDENTATION
+        actualIndentation:   str = self._configuration.indentation
+        self.assertEqual(expectedIndentation, actualIndentation, 'Default indentation has changed')
 
     def testName2(self):
         """Another test"""

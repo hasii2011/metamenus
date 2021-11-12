@@ -62,12 +62,14 @@ from metamenus import use_unidecode
 
 # Constants --------------------------------------------------------------------
 
-# If you rather use a different indentation level for menus,
-# change _ind here.
-_ind = 2 * " "
+# # If you rather use a different indentation level for menus,
+# # change _ind here.
+# _ind = 2 * " "
 
 # _sep is used internally only and is a substring that _cannot_
 # appear on any of the regular menu labels.
+from metamenus.Configuration import Configuration
+
 _sep = " @@@ "
 
 # If you want to use different prefixes for methods called by this
@@ -338,7 +340,7 @@ def _evolve(a):
 
     for i in range(1, len(a)):
         params = a[i]
-        level  = params[0].count(_ind) - 1
+        level  = params[0].count(Configuration().indentation) - 1
 
         if level > il:
             il += 1
@@ -363,7 +365,7 @@ def _clean(s):
 
     else:
         # noinspection SpellCheckingInspection
-        so = "áàãâäéèêëíìîïóòõôöúùûüçýÿÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÔÖÚÙÛÜÇÝ"
+        so = "?????????????????????????????????????????????????"
         # noinspection SpellCheckingInspection
         sd = "aaaaaeeeeiiiiooooouuuucyyAAAAAEEEEIIIIOOOOOUUUUCY"
 

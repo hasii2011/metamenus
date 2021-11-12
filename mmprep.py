@@ -12,7 +12,7 @@ __version__ = "0.13"
 
 @command()
 @option('-m', '--menu-module', required=True, help='The python module containing the menu "trees"')
-@option('-o', '--output-file', required=True, help='the output file generated that can be parsed by the gettext utilities.')
+@option('-o', '--output-file', required=True, help='The output file generated that can be parsed by the gettext utilities.')
 @version_option(version=f'{__version__}', message='%(version)s')
 def commandHandler(menu_module: str, output_file: str):
     from sys import path
@@ -44,6 +44,7 @@ def commandHandler(menu_module: str, output_file: str):
     # ---------------------------------------------------------------------------
     # """ % (__version__, __author__, __date__))
     #
+
 
 if __name__ == "__main__":
     commandHandler()
