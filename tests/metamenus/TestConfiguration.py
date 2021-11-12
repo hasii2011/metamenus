@@ -40,9 +40,11 @@ class TestConfiguration(TestBase):
         actualIndentation:   str = self._configuration.indentation
         self.assertEqual(expectedIndentation, actualIndentation, 'Default indentation has changed')
 
-    def testName2(self):
-        """Another test"""
-        pass
+    def testDefaultMenuBarPrefix(self):
+
+        expectedPrefix: str = Configuration.DEFAULT_MENU_BAR_PREFIX
+        actualPrefix:   str = self._configuration.menuBarPrefix
+        self.assertEqual(expectedPrefix, actualPrefix, 'Default menu bar method prefix has changed')
 
 
 def suite() -> TestSuite:

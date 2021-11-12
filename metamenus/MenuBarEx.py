@@ -1,3 +1,4 @@
+from typing import Callable
 
 from wx import EVT_MENU
 from wx import NullFont
@@ -16,12 +17,12 @@ from wx._core import wxAssertionError
 
 from metamenus import MenuExAfterEvent
 from metamenus import MenuExBeforeEvent
+from metamenus.Configuration import Configuration
 from metamenus.metamenus import _clean
 from metamenus.metamenus import _makeMenus
 from metamenus.metamenus import _sItem
 from metamenus.metamenus import _verbose
 from metamenus.metamenus import _evolve
-from metamenus.metamenus import _prefixMB
 
 
 class MenuBarEx(MenuBar):
@@ -35,15 +36,17 @@ class MenuBarEx(MenuBar):
         """
 
         # Initializing...
-        self.parent, menus = args
-        margin = kwargs.pop("margin", DEFAULT)
+        self.parent, menus = args   # TODO fix this to use typing
+
+        margin: int  = kwargs.pop("margin", DEFAULT)
         font = kwargs.pop("font", NullFont)
         # noinspection SpellCheckingInspection
-        custfunc = kwargs.pop("custfunc", {})
+        custfunc: Callable = kwargs.pop("custfunc", {})
         i18n = self.i18n = kwargs.pop("i18n", True)
 
         MenuBar.__init__(self, **kwargs)
 
+        self._configuration: Configuration = Configuration()
         # A reference to all of the sItems involved.
         tops = []
 
@@ -83,7 +86,7 @@ class MenuBarEx(MenuBar):
         self.MBStrings = {}
         for top in tops:
             for child in top.GetChildren(True):
-                child.SetMethod(_prefixMB, custfunc)
+                child.SetMethod(self._configuration.menuBarPrefix, custfunc)
                 MBIds[child.GetId()] = child
                 self.MBStrings.update(child.GetAllMethods())
 

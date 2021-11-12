@@ -74,7 +74,7 @@ _sep = " @@@ "
 
 # If you want to use different prefixes for methods called by this
 # menu bar/menu, change them here.
-_prefixMB = "OnMB_"
+# _prefixMB = "OnMB_"
 _prefixM  = "OnM_"
 
 # If you want to print messages warning about methods not
