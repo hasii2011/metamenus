@@ -1,6 +1,8 @@
-from typing import Callable
+
+from typing import Dict
 
 from wx import EVT_MENU
+from wx import Font
 from wx import NullFont
 
 from wx import Menu
@@ -38,10 +40,11 @@ class MenuBarEx(MenuBar):
         # Initializing...
         self.parent, menus = args   # TODO fix this to use typing
 
-        margin: int  = kwargs.pop("margin", DEFAULT)
-        font = kwargs.pop("font", NullFont)
+        margin:   int  = kwargs.pop("margin", DEFAULT)
         # noinspection SpellCheckingInspection
-        custfunc: Callable = kwargs.pop("custfunc", {})
+        custfunc: Dict = kwargs.pop("custfunc", {})
+
+        font: Font = kwargs.pop("font", NullFont)
         i18n = self.i18n = kwargs.pop("i18n", True)
 
         MenuBar.__init__(self, **kwargs)

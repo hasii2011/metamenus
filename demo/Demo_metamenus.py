@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from typing import Dict
+
 import sys
 
 import wx
@@ -96,14 +98,21 @@ class mmTestFrame(wx.Frame):
         self.SetStatusText("Well here is the status bar")
 
         # This creates and attaches the menu bar to this frame
-        self.mb = MenuBarEx(self, my_menubar)
+        # self.mb = MenuBarEx(self, my_menubar)
 
         # noinspection SpellCheckingInspection
         """
         Shows how to use the custfunc arg
-        telling to use 'onSave' instead of 'OnMB_FileSave':
-        self.mb = MenuBarEx(self, my_menubar, custfunc={"FileSave": "onSave"})
+        Instructs metamenus to use 
+            'onSave' instead of 'OnMB_FileSave'
+        and
+            'onCloseAll' instead of 'OnMB_FileCloseAll'
         """
+        customMethods: Dict = {
+            "FileSave":     "onSave",
+            "FileCloseAll": "onCloseAll"
+        }
+        self.mb = MenuBarEx(self, my_menubar, custfunc=customMethods)
         panel = wx.Panel(self)
 
         sizer = wx.GridBagSizer()
