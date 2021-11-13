@@ -46,6 +46,18 @@ class TestConfiguration(TestBase):
         actualPrefix:   str = self._configuration.menuBarPrefix
         self.assertEqual(expectedPrefix, actualPrefix, 'Default menu bar method prefix has changed')
 
+    def testDefaultMenuPrefix(self):
+
+        expectedPrefix: str = Configuration.DEFAULT_MENU_PREFIX
+        actualPrefix:   str = self._configuration.menuPrefix
+        self.assertEqual(expectedPrefix, actualPrefix, 'Default menu method prefix has changed')
+
+    def testDefaultVerboseWarnings(self):
+
+        expectedValue: bool = Configuration.DEFAULT_VERBOSE_WARNINGS
+        actualValue:   bool = self._configuration.verboseWarnings
+        self.assertEqual(expectedValue, actualValue, 'Verbosity default has changed')
+
 
 def suite() -> TestSuite:
     """You need to change the name of the test class here also."""

@@ -1,8 +1,8 @@
 
 from wx import EVT_MENU
+
 from wx import Font
 from wx import NullFont
-
 from wx import Menu
 from wx import MenuBar
 
@@ -21,7 +21,6 @@ from metamenus.Configuration import Configuration
 from metamenus.metamenus import _clean
 from metamenus.metamenus import _makeMenus
 from metamenus.metamenus import _sItem
-from metamenus.metamenus import _verbose
 from metamenus.metamenus import _evolve
 from metamenus.types import CustomMethods
 
@@ -130,8 +129,8 @@ class MenuBarEx(MenuBar):
                 elif hasattr(self.parent, attr_name) and callable(getattr(self.parent, attr_name)):
                     getattr(self.parent, attr_name)()
                 else:
-                    if _verbose:
-                        print("%s not found in parent." % attr_name)
+                    if self._configuration.verboseWarnings is True:
+                        print(f"{attr_name} not found in parent.")
             # TODO fix this
             # noinspection PyUnboundLocalVariable
             self.OnMB_after(attr_name)

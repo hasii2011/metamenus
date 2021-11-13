@@ -1,27 +1,3 @@
-
-from wx import ART_MENU
-from wx import ITEM_CHECK
-from wx import ITEM_NORMAL
-from wx import ITEM_RADIO
-
-from wx import ArtProvider
-from wx import GetTranslation
-from wx import MenuItem
-from wx import NullBitmap
-from wx import NullFont
-from wx import Platform
-
-# TODO ask tacao if we can avoid using these
-# noinspection PyProtectedMember
-from wx._core import ItemKind
-
-from wx import NewId
-
-# noinspection PyUnresolvedReferences
-from wx.core import DEFAULT
-
-from metamenus import use_unidecode
-
 #
 # metamenus vs. 0.13 (15/09/2020)
 #
@@ -55,30 +31,38 @@ from metamenus import use_unidecode
 # IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
+from wx import ART_MENU
+from wx import ITEM_CHECK
+from wx import ITEM_NORMAL
+from wx import ITEM_RADIO
+
+from wx import ArtProvider
+from wx import GetTranslation
+from wx import MenuItem
+from wx import NullBitmap
+from wx import NullFont
+from wx import Platform
+
+# TODO ask tacao if we can avoid using these
+# noinspection PyProtectedMember
+from wx._core import ItemKind
+
+from wx import NewId
+
+# noinspection PyUnresolvedReferences
+from wx.core import DEFAULT
+
+from metamenus import use_unidecode
+
+from metamenus.Configuration import Configuration
+
+from metamenus.types import CustomMethods
 
 # More info on 'history' and 'README.md' files.
 
-# Constants --------------------------------------------------------------------
-
-# # If you rather use a different indentation level for menus,
-# # change _ind here.
-# _ind = 2 * " "
-
 # _sep is used internally only and is a substring that _cannot_
 # appear on any of the regular menu labels.
-from metamenus.Configuration import Configuration
-from metamenus.types import CustomMethods
-
 _sep = " @@@ "
-
-# If you want to use different prefixes for methods called by this
-# menu bar/menu, change them here.
-# _prefixMB = "OnMB_"
-_prefixM  = "OnM_"
-
-# If you want to print messages warning about methods not
-# found on parent, change this to True.
-_verbose = True
 
 
 class _sItem:
@@ -356,7 +340,7 @@ def _evolve(a):
 
 def _clean(s):
     """
-    Internal use only. Tries to remove all accentuated chars from a string.
+    Internal use only. Tries to remove all accented characters from a string.
     """
     
     if use_unidecode:
@@ -365,9 +349,9 @@ def _clean(s):
 
     else:
         # noinspection SpellCheckingInspection
-        so = "?????????????????????????????????????????????????"
+        so = "áàãâäéèêëíìîïóòõôöúùûüçýÿÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÔÖÚÙÛÜÇÝ"
         # noinspection SpellCheckingInspection
-        sd = "aaaaaeeeeiiiiooooouuuucyyAAAAAEEEEIIIIOOOOOUUUUCY"
+        sd = "áàãâäéèêëíìîïóòõôöúùûüçýÿÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÔÖÚÙÛÜÇÝ"
 
         for i, char in enumerate(so):
             if char in s:

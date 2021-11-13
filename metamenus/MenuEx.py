@@ -1,11 +1,13 @@
+
 from wx import EVT_MENU
-from wx import Font
-from wx import GetTranslation
 from wx import ITEM_CHECK
 from wx import ITEM_RADIO
+
+from wx import Font
 from wx import Menu
 from wx import NullFont
 
+from wx import GetTranslation
 from wx import PostEvent
 # noinspection PyUnresolvedReferences
 from wx.core import DEFAULT
@@ -16,11 +18,10 @@ from wx._core import wxAssertionError
 
 from metamenus import MenuExAfterEvent
 from metamenus import MenuExBeforeEvent
+from metamenus.Configuration import Configuration
 from metamenus.metamenus import _evolve
 from metamenus.metamenus import _makeMenus
-from metamenus.metamenus import _prefixM
 from metamenus.metamenus import _sItem
-from metamenus.metamenus import _verbose
 from metamenus.types import CustomMethods
 
 
@@ -45,6 +46,8 @@ class MenuEx(Menu):
         self.i18n:      bool = i18n
 
         Menu.__init__(self, **kwargs)
+
+        self._configuration: Configuration = Configuration()
 
         self._title = menu[0][0]
         if show_title:
@@ -81,7 +84,7 @@ class MenuEx(Menu):
             Id = child.GetId()
             item = self.FindItemById(Id)
             if item:
-                child.SetMethod(_prefixM, customMethods)
+                child.SetMethod(self._configuration.menuPrefix, customMethods)
                 self.MenuIds[Id] = child
                 self.MenuStrings.update(child.GetAllMethods())
                 self.MenuList.append([Id, child.GetPath()])
@@ -160,8 +163,8 @@ class MenuEx(Menu):
                 elif hasattr(self.parent, attr_name) and callable(getattr(self.parent, attr_name)):
                     getattr(self.parent, attr_name)()
                 else:
-                    if _verbose:
-                        print("%s not found in parent." % attr_name)
+                    if self._configuration.verboseWarnings is True:
+                        print(f"{attr_name} not found in parent.")
 
             # TODO fix this
             # noinspection PyUnboundLocalVariable
