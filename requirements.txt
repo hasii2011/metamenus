@@ -5,3 +5,4 @@ build~=0.7.0
 wxPython==4.1.1
 click==7.1.2
 html-testRunner~=1.2.1
+mypy~=0.910

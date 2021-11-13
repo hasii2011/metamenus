@@ -22,8 +22,6 @@ from wx.core import DEFAULT
 
 from metamenus import use_unidecode
 
-# -*- coding: utf-8 -*-
-
 #
 # metamenus vs. 0.13 (15/09/2020)
 #
@@ -69,6 +67,7 @@ from metamenus import use_unidecode
 # _sep is used internally only and is a substring that _cannot_
 # appear on any of the regular menu labels.
 from metamenus.Configuration import Configuration
+from metamenus.types import CustomMethods
 
 _sep = " @@@ "
 
@@ -246,11 +245,12 @@ class _sItem:
         return path
 
     # noinspection SpellCheckingInspection
-    def SetMethod(self, prefix, custfunc):
+    def SetMethod(self, prefix: str, customMethods: CustomMethods):
+
         menuName = _clean(self.GetPath())
 
         # noinspection SpellCheckingInspection
-        method_custom = custfunc.get(menuName)
+        method_custom = customMethods.get(menuName)
         method_default = prefix + menuName
 
         # noinspection SpellCheckingInspection

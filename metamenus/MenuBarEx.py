@@ -1,6 +1,4 @@
 
-from typing import Dict
-
 from wx import EVT_MENU
 from wx import Font
 from wx import NullFont
@@ -25,6 +23,7 @@ from metamenus.metamenus import _makeMenus
 from metamenus.metamenus import _sItem
 from metamenus.metamenus import _verbose
 from metamenus.metamenus import _evolve
+from metamenus.types import CustomMethods
 
 
 class MenuBarEx(MenuBar):
@@ -34,7 +33,8 @@ class MenuBarEx(MenuBar):
     def __init__(self, *args, **kwargs):
         # noinspection SpellCheckingInspection
         """
-        MenuBarEx(parent, menus, margin=wx.DEFAULT, font=wx.NullFont,custfunc={}, i18n=True, style=0)
+        MenuBarEx(parent, menus, margin=wx.DEFAULT, font=wx.NullFont,
+        customMethods: CustomMethods=CustomMethods({}), i18n=True, style=0)
         """
 
         # Initializing...
@@ -42,7 +42,8 @@ class MenuBarEx(MenuBar):
 
         margin:   int  = kwargs.pop("margin", DEFAULT)
         # noinspection SpellCheckingInspection
-        custfunc: Dict = kwargs.pop("custfunc", {})
+        """ custfunc: Dict = kwargs.pop("custfunc", {}) """
+        customMethods: CustomMethods = kwargs.pop('customMethods', CustomMethods({}))
 
         font: Font = kwargs.pop("font", NullFont)
         i18n = self.i18n = kwargs.pop("i18n", True)
@@ -89,7 +90,9 @@ class MenuBarEx(MenuBar):
         self.MBStrings = {}
         for top in tops:
             for child in top.GetChildren(True):
-                child.SetMethod(self._configuration.menuBarPrefix, custfunc)
+                # noinspection SpellCheckingInspection
+                """ child.SetMethod(self._configuration.menuBarPrefix, custfunc) """
+                child.SetMethod(self._configuration.menuBarPrefix, customMethods)
                 MBIds[child.GetId()] = child
                 self.MBStrings.update(child.GetAllMethods())
 

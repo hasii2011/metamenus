@@ -112,7 +112,7 @@ class mmTestFrame(wx.Frame):
             "FileSave":     "onSave",
             "FileCloseAll": "onCloseAll"
         }
-        self.mb = MenuBarEx(self, my_menubar, custfunc=customMethods)
+        self.mb = MenuBarEx(self, my_menubar, customMethods=customMethods)
         panel = wx.Panel(self)
 
         sizer = wx.GridBagSizer()
