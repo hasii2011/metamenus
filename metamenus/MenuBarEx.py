@@ -1,8 +1,6 @@
 
 from wx import EVT_MENU
 
-from wx import Font
-from wx import NullFont
 from wx import Menu
 from wx import MenuBar
 
@@ -17,15 +15,16 @@ from wx._core import wxAssertionError
 
 from metamenus import MenuExAfterEvent
 from metamenus import MenuExBeforeEvent
-from metamenus.Configuration import Configuration
+
+from metamenus.BaseMenuEx import BaseMenuEx
+
 from metamenus.metamenus import _clean
 from metamenus.metamenus import _makeMenus
 from metamenus.metamenus import _sItem
 from metamenus.metamenus import _evolve
-from metamenus.types import CustomMethods
 
 
-class MenuBarEx(MenuBar):
+class MenuBarEx(BaseMenuEx, MenuBar):
     """
     MenuBarEx Main stuff
     """
@@ -35,19 +34,11 @@ class MenuBarEx(MenuBar):
         MenuBarEx(parent, menus, margin=wx.DEFAULT, font=wx.NullFont,
         customMethods: CustomMethods=CustomMethods({}), i18n=True, style=0)
         """
+        BaseMenuEx.__init__(self, *args, **kwargs)
 
-        # Initializing...
-        self.parent, menus = args   # TODO fix this to use typing
+        strippedKWArgs = self._extractKeyWordValues(**kwargs)
+        MenuBar.__init__(self, **strippedKWArgs)
 
-        margin:         int  = kwargs.pop("margin", DEFAULT)
-        customMethods:  CustomMethods = kwargs.pop('customMethods', CustomMethods({}))
-        font:           Font = kwargs.pop("font", NullFont)
-        i18n:           bool = kwargs.pop("i18n", True)
-        self.i18n:      bool = i18n
-
-        MenuBar.__init__(self, **kwargs)
-
-        self._configuration: Configuration = Configuration()
         # A reference to all of the sItems involved.
         tops = []
 
@@ -55,7 +46,7 @@ class MenuBarEx(MenuBar):
         self.x = []
 
         # For each menu...
-        for a in menus:
+        for a in self._menus:
             # Parse the menu 'tree' supplied.
             top = _evolve(a)
 
@@ -66,14 +57,14 @@ class MenuBarEx(MenuBar):
 
                 # ...and append their respective children.
                 for h in k.GetChildren():
-                    wxMenus = _makeMenus(wxMenus, h, k, margin, font, i18n)
+                    wxMenus = _makeMenus(wxMenus, h, k, self._margin, self._font, self._i18n)
 
             # Now append these items to the top level menu.
             for h in top.GetChildren():
-                wxMenus = _makeMenus(wxMenus, h, top, margin, font, i18n)
+                wxMenus = _makeMenus(wxMenus, h, top, self._margin, self._font, self._i18n)
 
             # Now append the top menu to the menu bar.
-            self.Append(wxMenus[top], top.GetRealLabel(i18n))
+            self.Append(wxMenus[top], top.GetRealLabel(self._i18n))
 
             # Store a reference of this sItem.
             tops.append(top)
@@ -89,7 +80,7 @@ class MenuBarEx(MenuBar):
             for child in top.GetChildren(True):
                 # noinspection SpellCheckingInspection
                 """ child.SetMethod(self._configuration.menuBarPrefix, custfunc) """
-                child.SetMethod(self._configuration.menuBarPrefix, customMethods)
+                child.SetMethod(self._configuration.menuBarPrefix, self._customMethods)
                 MBIds[child.GetId()] = child
                 self.MBStrings.update(child.GetAllMethods())
 
@@ -104,8 +95,8 @@ class MenuBarEx(MenuBar):
             MBIds[i] = top
 
         # Nice class. 8^) Will take care of this automatically.
-        self.parent.SetMenuBar(self)
-        self.parent.Bind(EVT_MENU, self.OnMB_)
+        self._parent.SetMenuBar(self)
+        self._parent.Bind(EVT_MENU, self.OnMB_)
 
         # Now do something about the IDs and accelerators...
         self.MBIds = MBIds
@@ -126,8 +117,8 @@ class MenuBarEx(MenuBar):
 
                 if callable(attr_name):
                     attr_name()
-                elif hasattr(self.parent, attr_name) and callable(getattr(self.parent, attr_name)):
-                    getattr(self.parent, attr_name)()
+                elif hasattr(self._parent, attr_name) and callable(getattr(self._parent, attr_name)):
+                    getattr(self._parent, attr_name)()
                 else:
                     if self._configuration.verboseWarnings is True:
                         print(f"{attr_name} not found in parent.")
@@ -165,20 +156,20 @@ class MenuBarEx(MenuBar):
         changes.
         """
 
-        if not self.i18n:
+        if not self._i18n:
             return
 
         for k, v in self.MBIds.items():
             # Update top-level menus
             if not v.GetParent():
                 v.Update()
-                self.SetMenuLabel(k, v.GetRealLabel(self.i18n))
+                self.SetMenuLabel(k, v.GetRealLabel(self._i18n))
             # Update other menu items
             else:
                 item = self.FindItemById(k)
                 if item is not None:   # Skip separators
                     v.Update()
-                    self.SetLabel(k, v.GetRealLabel(self.i18n))
+                    self.SetLabel(k, v.GetRealLabel(self._i18n))
 
     def GetItemState(self, menu_string):
         """Returns True if a checkable menu item is checked."""

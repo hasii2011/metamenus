@@ -3,9 +3,7 @@ from wx import EVT_MENU
 from wx import ITEM_CHECK
 from wx import ITEM_RADIO
 
-from wx import Font
 from wx import Menu
-from wx import NullFont
 
 from wx import GetTranslation
 from wx import PostEvent
@@ -18,40 +16,32 @@ from wx._core import wxAssertionError
 
 from metamenus import MenuExAfterEvent
 from metamenus import MenuExBeforeEvent
-from metamenus.Configuration import Configuration
+from metamenus.BaseMenuEx import BaseMenuEx
+
 from metamenus.metamenus import _evolve
 from metamenus.metamenus import _makeMenus
 from metamenus.metamenus import _sItem
-from metamenus.types import CustomMethods
 
 
-class MenuEx(Menu):
+class MenuEx(Menu, BaseMenuEx):
     """
-    MenuEx Main stuff
     """
+
+    # noinspection PyUnusedLocal
     def __init__(self, *args, **kwargs):
         # noinspection SpellCheckingInspection
         """
         MenuEx(parent, menu, margin=wx.DEFAULT, font=wx.NullFont, show_title=True,
         customMethods: CustomMethods=CustomMethods({}), i18n=True, style=0)
         """
-        # Initializing...
-        self.parent, menu = args
+        BaseMenuEx.__init__(self, *args, **kwargs)
 
-        margin:         int  = kwargs.pop("margin", DEFAULT)
-        font:           Font = kwargs.pop("font", NullFont)
-        show_title:     bool = kwargs.pop("show_title", True)
-        customMethods:  CustomMethods = kwargs.pop('customMethods', CustomMethods({}))
-        i18n:           bool = kwargs.pop("i18n", True)
-        self.i18n:      bool = i18n
+        strippedKWArgs = self._extractKeyWordValues(**kwargs)
+        Menu.__init__(self, **strippedKWArgs)
 
-        Menu.__init__(self, **kwargs)
-
-        self._configuration: Configuration = Configuration()
-
-        self._title = menu[0][0]
-        if show_title:
-            if i18n:
+        self._title = self._menus[0][0]
+        if self._show_title:
+            if self._i18n:
                 self.SetTitle(GetTranslation(self._title))
             else:
                 self.SetTitle(self._title)
@@ -60,7 +50,7 @@ class MenuEx(Menu):
         self.x = []
 
         # Parse the menu 'tree' supplied.
-        top = _evolve(menu)
+        top = _evolve(self._menus)
 
         # Create these menus first...
         wxMenus = {top: self}
@@ -69,11 +59,11 @@ class MenuEx(Menu):
 
             # ...and append their respective children.
             for h in k.GetChildren():
-                wxMenus = _makeMenus(wxMenus, h, k, margin, font, i18n)
+                wxMenus = _makeMenus(wxMenus, h, k, self._margin, self._font, self._i18n)
 
         # Now append these items to the top level menu.
         for h in top.GetChildren():
-            wxMenus = _makeMenus(wxMenus, h, top, margin, font, i18n)
+            wxMenus = _makeMenus(wxMenus, h, top, self._margin, self._font, self._i18n)
 
         # Now find out what are the methods that should be called upon
         # menu items selection.
@@ -84,7 +74,7 @@ class MenuEx(Menu):
             Id = child.GetId()
             item = self.FindItemById(Id)
             if item:
-                child.SetMethod(self._configuration.menuPrefix, customMethods)
+                child.SetMethod(self._configuration.menuPrefix, self._customMethods)
                 self.MenuIds[Id] = child
                 self.MenuStrings.update(child.GetAllMethods())
                 self.MenuList.append([Id, child.GetPath()])
@@ -105,7 +95,7 @@ class MenuEx(Menu):
         #
         # TODO: Used to work before Phoenix on TaskBarIcons,
         # now it seems we have to bind there instead... 8^(
-        self.parent.Bind(EVT_MENU, self.OnM_)
+        self._parent.Bind(EVT_MENU, self.OnM_)
 
     def _update(self, i):
         def _resetRadioGroup(idx):
@@ -160,8 +150,8 @@ class MenuEx(Menu):
 
                 if callable(attr_name):
                     attr_name()
-                elif hasattr(self.parent, attr_name) and callable(getattr(self.parent, attr_name)):
-                    getattr(self.parent, attr_name)()
+                elif hasattr(self._parent, attr_name) and callable(getattr(self._parent, attr_name)):
+                    getattr(self._parent, attr_name)()
                 else:
                     if self._configuration.verboseWarnings is True:
                         print(f"{attr_name} not found in parent.")
@@ -207,7 +197,7 @@ class MenuEx(Menu):
         tacao;  -- Humberto
         """
 
-        if not self.i18n:
+        if not self._i18n:
             return
 
         # noinspection PyUnresolvedReferences
@@ -215,7 +205,7 @@ class MenuEx(Menu):
             item = self.FindItemById(k)
             if item is not None:   # Skip separators
                 v.Update()
-                self.SetLabel(k, v.GetRealLabel(self.i18n))
+                self.SetLabel(k, v.GetRealLabel(self._i18n))
 
     def Popup(self, evt):
         """Pops this menu up."""
