@@ -40,13 +40,11 @@ class MenuBarEx(MenuBar):
         # Initializing...
         self.parent, menus = args   # TODO fix this to use typing
 
-        margin:   int  = kwargs.pop("margin", DEFAULT)
-        # noinspection SpellCheckingInspection
-        """ custfunc: Dict = kwargs.pop("custfunc", {}) """
-        customMethods: CustomMethods = kwargs.pop('customMethods', CustomMethods({}))
-
-        font: Font = kwargs.pop("font", NullFont)
-        i18n = self.i18n = kwargs.pop("i18n", True)
+        margin:         int  = kwargs.pop("margin", DEFAULT)
+        customMethods:  CustomMethods = kwargs.pop('customMethods', CustomMethods({}))
+        font:           Font = kwargs.pop("font", NullFont)
+        i18n:           bool = kwargs.pop("i18n", True)
+        self.i18n:      bool = i18n
 
         MenuBar.__init__(self, **kwargs)
 

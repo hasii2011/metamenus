@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-from typing import Dict
-
 import sys
 
 import wx
@@ -51,7 +49,9 @@ from Demo_menubar import my_menubar
 # IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-
+from metamenus.types import CustomMethods
+from metamenus.types import MenuName
+from metamenus.types import MethodName
 
 sys.path.append("..")
 
@@ -97,9 +97,11 @@ class mmTestFrame(wx.Frame):
         self.CreateStatusBar()
         self.SetStatusText("Well here is the status bar")
 
-        # This creates and attaches the menu bar to this frame
-        # self.mb = MenuBarEx(self, my_menubar)
-
+        # noinspection SpellCheckingInspection
+        """
+            This creates and attaches the menu bar to this frame
+            self.mb = MenuBarEx(self, my_menubar)
+        """
         # noinspection SpellCheckingInspection
         """
         Shows how to use the custfunc arg
@@ -108,10 +110,10 @@ class mmTestFrame(wx.Frame):
         and
             'onCloseAll' instead of 'OnMB_FileCloseAll'
         """
-        customMethods: Dict = {
-            "FileSave":     "onSave",
-            "FileCloseAll": "onCloseAll"
-        }
+        customMethods: CustomMethods = CustomMethods({
+            MenuName("FileSave"):     MethodName("onSave"),
+            MenuName("FileCloseAll"): MethodName("onCloseAll")
+        })
         self.mb = MenuBarEx(self, my_menubar, customMethods=customMethods)
         panel = wx.Panel(self)
 

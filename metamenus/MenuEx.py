@@ -1,4 +1,5 @@
 from wx import EVT_MENU
+from wx import Font
 from wx import GetTranslation
 from wx import ITEM_CHECK
 from wx import ITEM_RADIO
@@ -20,6 +21,7 @@ from metamenus.metamenus import _makeMenus
 from metamenus.metamenus import _prefixM
 from metamenus.metamenus import _sItem
 from metamenus.metamenus import _verbose
+from metamenus.types import CustomMethods
 
 
 class MenuEx(Menu):
@@ -29,17 +31,18 @@ class MenuEx(Menu):
     def __init__(self, *args, **kwargs):
         # noinspection SpellCheckingInspection
         """
-        MenuEx(parent, menu, margin=wx.DEFAULT, font=wx.NullFont, show_title=True, custfunc={}, i18n=True, style=0)
+        MenuEx(parent, menu, margin=wx.DEFAULT, font=wx.NullFont, show_title=True,
+        customMethods: CustomMethods=CustomMethods({}), i18n=True, style=0)
         """
-
         # Initializing...
         self.parent, menu = args
-        margin = kwargs.pop("margin", DEFAULT)
-        font = kwargs.pop("font", NullFont)
-        show_title = kwargs.pop("show_title", True)
-        # noinspection SpellCheckingInspection
-        custfunc = kwargs.pop("custfunc", {})
-        i18n = self.i18n = kwargs.pop("i18n", True)
+
+        margin:         int  = kwargs.pop("margin", DEFAULT)
+        font:           Font = kwargs.pop("font", NullFont)
+        show_title:     bool = kwargs.pop("show_title", True)
+        customMethods:  CustomMethods = kwargs.pop('customMethods', CustomMethods({}))
+        i18n:           bool = kwargs.pop("i18n", True)
+        self.i18n:      bool = i18n
 
         Menu.__init__(self, **kwargs)
 
@@ -78,12 +81,12 @@ class MenuEx(Menu):
             Id = child.GetId()
             item = self.FindItemById(Id)
             if item:
-                child.SetMethod(_prefixM, custfunc)
+                child.SetMethod(_prefixM, customMethods)
                 self.MenuIds[Id] = child
                 self.MenuStrings.update(child.GetAllMethods())
                 self.MenuList.append([Id, child.GetPath()])
 
-        # 'fix' for https://github.com/wxWidgets/Phoenix/issues/1648
+            # 'fix' for https://github.com/wxWidgets/Phoenix/issues/1648
             self.x.append(wxMenus)
 
         # Initialize menu states.
