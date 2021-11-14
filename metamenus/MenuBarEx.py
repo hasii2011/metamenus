@@ -32,7 +32,7 @@ class MenuBarEx(BaseMenuEx, MenuBar):
         # noinspection SpellCheckingInspection
         """
         MenuBarEx(parent, menus, margin=wx.DEFAULT, font=wx.NullFont,
-        customMethods: CustomMethods=CustomMethods({}), i18n=True, style=0)
+        customMethods=CustomMethods({}), i18n=True, style=0)
         """
         BaseMenuEx.__init__(self, *args, **kwargs)
 

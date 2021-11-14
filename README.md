@@ -1,6 +1,13 @@
 # Introduction
 
-This package was simply imported by [Humberto A. Sanchez II](https://hsanchezii.wordpress.com) into GitHub for the purpose of source control and publishing to [PyPi](https://pypi.org).  I also updated some of the formatting to quiet the PEP 8 warnings given by PyCharm.	
+This package was forked by [Humberto A. Sanchez II](https://hsanchezii.wordpress.com) 
+into GitHub for the purpose of source control and publishing 
+to [PyPi](https://pypi.org).  I also updated the formatting to quiet the PEP 8 warnings 
+given by PyCharm.  Additionally, I reorganized the packages for maintainability.
+This has the effect of changing the imports for the MenuBarEx and MenuEx but does
+not alter the functionality.  In order to more explicitly document what used to be
+called `custfunc` I created a type named `CustomMethods` so that the API user knows 
+that this is a dictionary
 
 # Overview
 
@@ -8,8 +15,8 @@ metamenus: classes that aim to simplify the use of menus in wxPython
 
 Written by E. A. Tacao <mailto@tacao.com.br>, (C) 2005... 2020
 
-MenuBarEx is a wx.MenuBar derived class for wxPython;
-MenuEx    is a wx.Menu derived class for wxPython.
+- `MenuBarEx` is a wx.MenuBar derived class for wxPython; 
+- `MenuEx`    is a wx.Menu derived class for wxPython.
 
 Some features:
 
@@ -19,7 +26,7 @@ Some features:
 - Each menu item will trigger a method on the parent. The methods names may
   be explicitly defined on the constructor, generated automatically or both.
 
-- Allows the user to enable or disable a menu item or an entire menu given
+- Allows the developer to enable or disable a menu item or an entire menu given
   its label.
 
 - Supplies EVT_BEFOREMENU and EVT_AFTERMENU, events that are triggered 
@@ -30,23 +37,48 @@ Some features:
   All you need to do is to write somewhere a .mo file containing the menu
   translations.
 
+## CustomMethods Type
+This new type is defined as follows:
+
+```python
+from typing import Dict
+from typing import NewType
+
+MenuName   = NewType('MenuName', str)
+MethodName = NewType('MethodName', str)
+
+CustomMethods = NewType('CustomMethods', Dict[MenuName, MethodName])
+
+```
 ## MenuEx Usage:
 
 The MenuEx usage is similar to MenuBarEx (please see below), except that it
 has an optional kwarg named show_title (boolean; controls whether the menu
 title will be shown; may be platform-dependent):
 
-     MenuEx(self, menus, margin=wx.DEFAULT, show_title=True,
-            font=wx.NullFont, custfunc={}, i18n=True, style=0)
+`MenuEx(self, menus, 
+    margin=wx.DEFAULT, 
+    show_title=True, 
+    font=wx.NullFont, 
+    CustomMethods=CustomMethods({}), 
+    i18n=True, 
+    style=0)`
 
 ## MenuBarEx Usage:
 
-In order to put a MenuBarEx inside a frame it's enough to do this:
+In order to put a MenuBarEx inside a frame it is enough to do this:
+
      MenuBarEx(self, menus)
 
 or you can also use some few optional keyword arguments:
-     MenuBarEx(self, menus, margin=wx.DEFAULT, font=wx.NullFont,
-               custfunc={}, i18n=True, style=0)
+     
+`MenuBarEx(self, 
+    menus, 
+    margin=wx.DEFAULT, 
+    font=wx.NullFont,
+    customMethods=CustomMethods({}), 
+    i18n=True, 
+    style=0)`
 
   Arguments:
     - self:  The frame in question.
@@ -148,7 +180,7 @@ or you can also use some few optional keyword arguments:
                 each menu item. Please refer to the wxPython docs for
                 wx.MenuItem.SetFont for more information about this.
     
-    - custfunc: (dict) allows one to define explicitly what will be the
+    - customMethods: (dict) allows one to define explicitly what will be the
                 parent's method called on a menu event.
     
                 By default, all parent's methods have to start with "OnMB_"
@@ -169,14 +201,14 @@ or you can also use some few optional keyword arguments:
                     {"FileSave": "onSave"}
                  or {"FileSave": self.onSave}
     
-                as custfunc. This way, your parent's method should look 
+                as custom method entry. This way, your parent's method should look 
                 like this instead:
     
                     def onSave(self):
                         self.file.save()
     
-                You don't have to put all menu items inside custfunc. The
-                menupaths not found there will still trigger automatically
+                You do not have to put all menu items inside customMethods 
+                dictionary. The menupaths not found there will still trigger automatically
                 an OnMB_/OnM_-prefixed method.
     
     - i18n:     (bool) Controls whether you want the items to be translated
@@ -311,6 +343,10 @@ metamenus is licensed under the BSD-3-Clause License.
 This code should meet the wxPython Coding Guidelines
 <http://www.wxpython.org/codeguidelines.php> and the wxPython Style Guide
 <http://wiki.wxpython.org/index.cgi/wxPython_20Style_20Guide>.
+
+## Note: 
+tacao does not maintain this fork.  I think I have to keep the following text to comply with the
+BSD-3 license.
 
 For all kind of problems, requests, enhancements, bug reports, etc,
 please drop me an e-mail.
