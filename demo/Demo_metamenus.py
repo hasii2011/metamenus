@@ -1,19 +1,5 @@
 #!/usr/bin/env python3
 
-import sys
-
-import wx
-from wx import Locale
-from wx import StaticLine
-from wx.adv import TaskBarIcon
-
-from metamenus.MenuBarEx import MenuBarEx
-from metamenus.MenuEx import MenuEx
-
-from Demo_context_menu import my_context_menu
-from Demo_images import the_snake
-from Demo_menubar import my_menubar
-
 # -*- coding: utf-8 -*-
 
 #
@@ -49,6 +35,22 @@ from Demo_menubar import my_menubar
 # IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
+
+import sys
+
+import wx
+from wx import Locale
+from wx import Platform
+from wx import StaticLine
+from wx.adv import TaskBarIcon
+
+from metamenus.MenuBarEx import MenuBarEx
+from metamenus.MenuEx import MenuEx
+
+from Demo_context_menu import my_context_menu
+from Demo_images import the_snake
+from Demo_menubar import my_menubar
+
 from metamenus.types import CustomMethods
 from metamenus.types import MenuName
 from metamenus.types import MethodName
@@ -238,7 +240,7 @@ class mmTestFrame(wx.Frame):
         dlg.Destroy()
 
     def OnMB_HelpAbout(self):
-        dlg = wx.MessageDialog(self, "Hello!", "metamenus demo", wx.OK | wx.ICON_INFORMATION)
+        dlg = wx.MessageDialog(self, 'Welcome!', 'This is a metamenus demonstration program', wx.OK | wx.ICON_INFORMATION)
         dlg.ShowModal()
         dlg.Destroy()
 
@@ -264,6 +266,8 @@ class MyApp(wx.App):
                     self.available_languages[i] = at
         
         mmTestFrame().Show(True)
+
+        print(f'Demonstration running on platform - {Platform}')
         return True
 
 

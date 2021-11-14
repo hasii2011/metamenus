@@ -21,7 +21,7 @@ from metamenus.BaseMenuEx import BaseMenuEx
 from metamenus.SItem import SItem
 
 from metamenus.metamenus import _evolve
-from metamenus.metamenus import _makeMenus
+# from metamenus.metamenus import _makeMenus
 
 
 class MenuEx(Menu, BaseMenuEx):
@@ -60,11 +60,11 @@ class MenuEx(Menu, BaseMenuEx):
 
             # ...and append their respective children.
             for h in k.GetChildren():
-                wxMenus = _makeMenus(wxMenus, h, k, self._margin, self._font, self._i18n)
+                wxMenus = self._makeMenus(wxMenus, h, k, self._margin, self._font, self._i18n)
 
         # Now append these items to the top level menu.
         for h in top.GetChildren():
-            wxMenus = _makeMenus(wxMenus, h, top, self._margin, self._font, self._i18n)
+            wxMenus = self.__makeMenus(wxMenus, h, top, self._margin, self._font, self._i18n)
 
         # Now find out what are the methods that should be called upon
         # menu items selection.
