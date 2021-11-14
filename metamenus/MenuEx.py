@@ -16,11 +16,12 @@ from wx._core import wxAssertionError
 
 from metamenus import MenuExAfterEvent
 from metamenus import MenuExBeforeEvent
+
 from metamenus.BaseMenuEx import BaseMenuEx
+from metamenus.SItem import SItem
 
 from metamenus.metamenus import _evolve
 from metamenus.metamenus import _makeMenus
-from metamenus.metamenus import _sItem
 
 
 class MenuEx(Menu, BaseMenuEx):
@@ -145,7 +146,7 @@ class MenuEx(Menu, BaseMenuEx):
 
             self.OnM_before()
 
-            if isinstance(attr, _sItem):
+            if isinstance(attr, SItem):
                 attr_name = attr.GetMethod()
 
                 if callable(attr_name):

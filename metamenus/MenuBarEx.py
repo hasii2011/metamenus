@@ -17,10 +17,10 @@ from metamenus import MenuExAfterEvent
 from metamenus import MenuExBeforeEvent
 
 from metamenus.BaseMenuEx import BaseMenuEx
+from metamenus.SItem import SItem
 
 from metamenus.metamenus import _clean
 from metamenus.metamenus import _makeMenus
-from metamenus.metamenus import _sItem
 from metamenus.metamenus import _evolve
 
 
@@ -112,7 +112,7 @@ class MenuBarEx(BaseMenuEx, MenuBar):
 
             self.OnMB_before()
 
-            if isinstance(attr, _sItem):
+            if isinstance(attr, SItem):
                 attr_name = attr.GetMethod()
 
                 if callable(attr_name):
