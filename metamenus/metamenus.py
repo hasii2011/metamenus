@@ -31,9 +31,8 @@
 # IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-
-# noinspection PyUnresolvedReferences
-from wx.core import DEFAULT
+from logging import Logger
+from logging import getLogger
 
 from metamenus import use_unidecode
 
@@ -121,9 +120,13 @@ class _mmPrep:
     """
 
     def __init__(self, filename, output_file):
-        """Constructor."""
 
-        print(f'Parsing {filename}.py...')
+        #
+        # For use by developers
+        #
+        self.logger: Logger = getLogger('metamenus')
+
+        self.logger.info(f'Parsing {filename}.py...')
 
         exec(f'import {filename}')
         mod = eval(filename)
@@ -139,32 +142,27 @@ class _mmPrep:
             header = ["\n# Strings for '%s':\n" % obj]
             err, lines = self.parseMenu(mod, obj)
             if not err:
-                print(f"OK: parsed '{obj}'")
+                self.logger.info(f"OK: parsed '{obj}'")
                 all_lines += header + lines
             else:
                 err, lines = self.parseMenuBar(mod, obj)
                 if not err:
-                    print(f"OK: parsed '{obj}'")
+                    self.logger.info(f"OK: parsed '{obj}'")
                     all_lines += header + lines
                 else:
                     gError = True
             if gError:
-                print(f"Warning: could not parse '{obj}'")
+                self.logger.warning(f"Could not parse '{obj}'")
 
         try:
-            # f = file("%s.py" % output_file, "w")
-            # f.writelines(all_lines)
-            # f.close()
-
-            with open("%s.py" % output_file, "w") as f:
+            with open(f'{output_file}.py', "w") as f:
                 f.writelines(all_lines)
 
-            print("File %s.py successfully written." % output_file)
+            self.logger.info(f'File {output_file}.py successfully written.')
 
         except (ValueError, Exception) as e:
-            print("ERROR: File %s.py was NOT written." % output_file)
-            print(f'{e}')
-            raise
+            self.logger.error(f'File {output_file}.py was NOT written.')
+            self.logger.error(f'{e.strerror} {e.errno} {e.filename}')
 
     def form(self, lines):
         """Removes separators and breaks and adds gettext stuff."""
@@ -178,7 +176,7 @@ class _mmPrep:
     def parseMenuBar(self, mod, obj):
         """Tries to parse a MenuBarEx object."""
 
-        err = False
+        parseError: bool = False
         lines = []
         try:
             for menu in getattr(mod, obj):
@@ -187,15 +185,15 @@ class _mmPrep:
                 for child in top.GetChildren(True):
                     lines.append(child.GetLabelText())
         except(ValueError, Exception) as e:
-            print(f'{e}')
-            err = True
+            self.logger.error(f'{e}')
+            parseError = True
 
-        return err, self.form(lines)
+        return parseError, self.form(lines)
 
     def parseMenu(self, mod, obj):
         """Tries to parse a MenuEx object."""
 
-        err = False
+        parseError: bool = False
         lines = []
         try:
             top = _evolve(getattr(mod, obj))
@@ -203,7 +201,7 @@ class _mmPrep:
             for child in top.GetChildren(True):
                 lines.append(child.GetLabelText())
         except (ValueError, Exception) as e:
-            print(f'{e}')
-            err = True
+            self.logger.error(f'{e}')
+            parseError = True
 
-        return err, self.form(lines)
+        return parseError, self.form(lines)

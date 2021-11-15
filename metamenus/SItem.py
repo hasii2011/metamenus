@@ -90,8 +90,10 @@ class SItem:
 
         I am not actually using all of them right now, but maybe I will...
         """
-        self.label = self.params[0].strip()
-        self.label_text = self.label.split("\t")[0].strip()
+        preLabel:        str = self.params[0]
+        self.label:      str = preLabel.strip()
+        self.label_text: str = self.label.split("\t")[0].strip()
+
         label, acc = (self.label.split("\t") + [''])[:2]
         self.tLabel_text = GetTranslation(label.strip())
         self.acc = acc.strip()

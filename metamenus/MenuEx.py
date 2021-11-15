@@ -64,7 +64,7 @@ class MenuEx(Menu, BaseMenuEx):
 
         # Now append these items to the top level menu.
         for h in top.GetChildren():
-            wxMenus = self.__makeMenus(wxMenus, h, top, self._margin, self._font, self._i18n)
+            wxMenus = self._makeMenus(wxMenus, h, top, self._margin, self._font, self._i18n)
 
         # Now find out what are the methods that should be called upon
         # menu items selection.
