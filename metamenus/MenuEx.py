@@ -1,4 +1,7 @@
 
+from logging import Logger
+from logging import getLogger
+
 from wx import EVT_MENU
 from wx import ITEM_CHECK
 from wx import ITEM_RADIO
@@ -18,6 +21,7 @@ from metamenus import MenuExAfterEvent
 from metamenus import MenuExBeforeEvent
 
 from metamenus.BaseMenuEx import BaseMenuEx
+from metamenus.Constants import LOGGING_NAME
 from metamenus.SItem import SItem
 
 from metamenus.metamenus import _evolve
@@ -36,6 +40,8 @@ class MenuEx(Menu, BaseMenuEx):
         customMethods: customMethods=CustomMethods({}), i18n=True, style=0)
         """
         BaseMenuEx.__init__(self, *args, **kwargs)
+
+        self.logger: Logger = getLogger(LOGGING_NAME)
 
         strippedKWArgs = self._extractKeyWordValues(**kwargs)
         Menu.__init__(self, **strippedKWArgs)
@@ -155,7 +161,7 @@ class MenuEx(Menu, BaseMenuEx):
                     getattr(self._parent, attr_name)()
                 else:
                     if self._configuration.verboseWarnings is True:
-                        print(f"{attr_name} not found in parent.")
+                        self.logger.warning(f"{attr_name} not found in parent.")
 
             # TODO fix this
             # noinspection PyUnboundLocalVariable

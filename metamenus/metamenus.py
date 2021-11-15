@@ -37,14 +37,7 @@ from logging import getLogger
 from metamenus import use_unidecode
 
 from metamenus.Configuration import Configuration
-
-# More info on 'history' and 'README.md' files.
-
-# _sep is used internally only and is a substring that _cannot_
-# appear on any of the regular menu labels.
-# from metamenus.SItem import SItem
-
-_sep = " @@@ "
+from metamenus.Constants import LOGGING_NAME
 
 
 def _evolve(a):
@@ -124,7 +117,7 @@ class _mmPrep:
         #
         # For use by developers
         #
-        self.logger: Logger = getLogger('metamenus')
+        self.logger: Logger = getLogger(LOGGING_NAME)
 
         self.logger.info(f'Parsing {filename}.py...')
 

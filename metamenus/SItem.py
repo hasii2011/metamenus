@@ -1,4 +1,7 @@
 
+from logging import Logger
+from logging import getLogger
+
 from wx import ITEM_CHECK
 from wx import ITEM_NORMAL
 from wx import ITEM_RADIO
@@ -12,8 +15,10 @@ from wx._core import ItemKind
 
 from metamenus.metamenus import _clean
 
-from metamenus.metamenus import _sep
 from metamenus.types import CustomMethods
+
+from metamenus.Constants import _sep
+from metamenus.Constants import LOGGING_NAME
 
 
 class SItem:
@@ -22,8 +27,11 @@ class SItem:
     supplied in a sane way.
     """
     def __init__(self, params):
+
+        self.logger: Logger = getLogger(LOGGING_NAME)
+
         self.parent = None
-        self.Id = NewId()
+        self.Id: int = NewId()
         self.params = self._adjust(params)
         self.children = []
 
