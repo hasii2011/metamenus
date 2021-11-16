@@ -9,6 +9,10 @@ not alter the functionality.  In order to more explicitly document what used to 
 called `custfunc` I created a type named `CustomMethods` so that the API user knows 
 that this is a dictionary
 
+# Developer Documents
+
+On the [wiki](https://github.com/hasii2011/metamenus/wiki/Developers)
+
 # Overview
 
 metamenus: classes that aim to simplify the use of menus in wxPython
