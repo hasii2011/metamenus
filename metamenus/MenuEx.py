@@ -25,7 +25,6 @@ from metamenus.Constants import LOGGING_NAME
 from metamenus.SItem import SItem
 
 from metamenus.metamenus import _evolve
-# from metamenus.metamenus import _makeMenus
 
 
 class MenuEx(Menu, BaseMenuEx):

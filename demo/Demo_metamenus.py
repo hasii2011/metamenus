@@ -44,16 +44,19 @@ from wx import Platform
 from wx import StaticLine
 from wx.adv import TaskBarIcon
 
+from metamenus.Constants import THE_GREAT_MAC_PLATFORM
+
 from metamenus.MenuBarEx import MenuBarEx
 from metamenus.MenuEx import MenuEx
+
+from metamenus.types import CustomMethods
+from metamenus.types import MenuName
+from metamenus.types import MethodName
 
 from Demo_context_menu import my_context_menu
 from Demo_images import the_snake
 from Demo_menubar import my_menubar
 
-from metamenus.types import CustomMethods
-from metamenus.types import MenuName
-from metamenus.types import MethodName
 
 sys.path.append("..")
 
@@ -86,14 +89,16 @@ class mmTestFrame(wx.Frame):
     def __init__(self):
         wx.Frame.__init__(self, None, wx.ID_ANY, 'metamenus demo')
 
-        # Fetch the snake, get this frame an icon
-        frame_icon = the_snake.GetIcon()
-        self.SetIcon(frame_icon)
+        if Platform != THE_GREAT_MAC_PLATFORM:
+            # Fetch the snake, get this frame an icon
+            frame_icon = the_snake.GetIcon()
+            self.SetIcon(frame_icon)
 
-        # Fetch the snake again, shrink it a bit, make it a task bar icon.
-        t_snake = wx.Icon(the_snake.GetImage().Scale(16, 16).ConvertToBitmap())
-        self.tbIcon = tbIcon(self, t_snake)
-        self.tbIcon.Bind(wx.adv.EVT_TASKBAR_LEFT_DOWN, self.OnTaskbarLeftDown)
+        if Platform != THE_GREAT_MAC_PLATFORM:
+            # Fetch the snake again, shrink it a bit, make it a task bar icon.
+            t_snake = wx.Icon(the_snake.GetImage().Scale(16, 16).ConvertToBitmap())
+            self.tbIcon = tbIcon(self, t_snake)
+            self.tbIcon.Bind(wx.adv.EVT_TASKBAR_LEFT_DOWN, self.OnTaskbarLeftDown)
 
         # Not compulsory, but here we will test metamenus status messages
         self.CreateStatusBar()
@@ -106,7 +111,7 @@ class mmTestFrame(wx.Frame):
         """
         # noinspection SpellCheckingInspection
         """
-        Shows how to use the custfunc arg
+        Shows how to use the  customMethods argument
         Instructs metamenus to use 
             'onSave' instead of 'OnMB_FileSave'
         and
@@ -205,7 +210,8 @@ class mmTestFrame(wx.Frame):
         # We need to explicitly destroy the TaskBarIcon object since it is not
         # a child of this frame and so closing the frame will not 'close' the
         # TaskBarIcon object automatically.
-        self.tbIcon.Destroy()
+        if Platform != THE_GREAT_MAC_PLATFORM:
+            self.tbIcon.Destroy()
 
         # Continue with your regular schedule.
         evt.Skip()
