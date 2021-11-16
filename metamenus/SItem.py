@@ -35,6 +35,12 @@ class SItem:
         self.params = self._adjust(params)
         self.children = []
 
+        self.label:         str = ''
+        self.labelText:     str = ''
+        self.tLabel:        str = ''
+        self.tLabelText:    str = ''
+        self.accelerator:   str = ''
+
         self.Update()
 
     def _adjust(self, params):
@@ -91,24 +97,26 @@ class SItem:
         Members created/updated here:
 
         label:            "&New\tCtrl+N"
-        label_text:       "&New"
-        tlabel:           "&Novo\tCtrl+N"     (full label translated)
-        tlabel_text:      "&Novo"             (label text translated)
-        acc:              "Ctrl+N"
+        labelText:        "&New"
+        tLabel:           "&Novo\tCtrl+N"     (full label translated)
+        tLabelText:       "&Novo"             (label text translated)
+        accelerator:      "Ctrl+N"
 
-        I am not actually using all of them right now, but maybe I will...
+        Not actually using all of them right now, but maybe later
         """
-        preLabel:        str = self.params[0]
-        self.label:      str = preLabel.strip()
-        self.label_text: str = self.label.split("\t")[0].strip()
+        preLabel: str = self.params[0]
+
+        self.label     = preLabel.strip()
+        self.labelText = self.label.split("\t")[0].strip()
 
         label, acc = (self.label.split("\t") + [''])[:2]
+
         self.tLabel_text = GetTranslation(label.strip())
-        self.acc = acc.strip()
-        if self.acc:
-            self.tLabel = "\t".join([self.tLabel_text, self.acc])
-        else:
+        self.accelerator = acc.strip()
+        if self.accelerator is None or self.accelerator == '':
             self.tLabel = self.tLabel_text
+        else:
+            self.tLabel = "\t".join([self.tLabel_text, self.accelerator])
 
     def AddChild(self, Item):
         Item.parent = self
@@ -126,7 +134,7 @@ class SItem:
         return self.label
 
     def GetLabelText(self):
-        return self.label_text
+        return self.labelText
 
     def GetLabelTranslation(self):
         return self.tLabel
@@ -135,7 +143,7 @@ class SItem:
         return self.tLabel_text
 
     def GetAccelerator(self):
-        return self.acc
+        return self.accelerator
 
     def GetId(self):
         return self.Id
