@@ -1,5 +1,6 @@
 
 from typing import Dict
+from typing import List
 
 from wx import ART_MENU
 from wx import ArtProvider
@@ -27,6 +28,36 @@ class BaseMenuEx:
         self._parent, self._menus = args    # TODO fix this with typing
 
         self._configuration: Configuration = Configuration()
+
+    @classmethod
+    def evolve(cls, a: List):
+        """
+        Internal use only. This will parse the supplied menu 'tree'.
+        Class method because also used by the mmprep class that supports the
+        mmprep CLI
+        """
+        from metamenus.SItem import SItem  # TODO We have a cyclical import problem
+
+        top = SItem(a[0])
+        il = 0
+        cur = {il: top}
+
+        for i in range(1, len(a)):
+
+            params = a[i]
+            level = params[0].count(Configuration().indentation) - 1
+
+            if level > il:
+                il += 1
+                # Todo fix this !!
+                # noinspection PyUnboundLocalVariable
+                cur[il] = new_sItem
+            elif level < il:
+                il = level
+
+            new_sItem: SItem = cur[il].AddChild(SItem(params))
+
+        return top
 
     def _extractKeyWordValues(self, **kwargs) -> Dict:
         """

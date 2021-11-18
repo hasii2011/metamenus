@@ -24,8 +24,6 @@ from metamenus.BaseMenuEx import BaseMenuEx
 from metamenus.Constants import META_MENUS_LOGGING_NAME
 from metamenus.SItem import SItem
 
-from metamenus.metamenus import _evolve
-
 
 class MenuEx(Menu, BaseMenuEx):
     """
@@ -56,7 +54,7 @@ class MenuEx(Menu, BaseMenuEx):
         self.x = []
 
         # Parse the menu 'tree' supplied.
-        top = _evolve(self._menus)
+        top = BaseMenuEx.evolve(self._menus)
 
         # Create these menus first...
         wxMenus = {top: self}

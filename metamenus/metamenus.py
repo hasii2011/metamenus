@@ -31,43 +31,41 @@
 # IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
-from typing import List
-
 from logging import Logger
 from logging import getLogger
 
 from metamenus import use_unidecode
+from metamenus.BaseMenuEx import BaseMenuEx
 
-from metamenus.Configuration import Configuration
 from metamenus.Constants import META_MENUS_LOGGING_NAME
 
 
-def _evolve(a: List):
-    """
-    Internal use only. This will parse the supplied menu 'tree'.
-    """
-    from metamenus.SItem import SItem   # TODO We have a cyclical import problem
-
-    top = SItem(a[0])
-    il = 0
-    cur = {il: top}
-
-    for i in range(1, len(a)):
-
-        params = a[i]
-        level  = params[0].count(Configuration().indentation) - 1
-
-        if level > il:
-            il += 1
-            # Todo fix this !!
-            # noinspection PyUnboundLocalVariable
-            cur[il] = new_sItem
-        elif level < il:
-            il = level
-
-        new_sItem: SItem = cur[il].AddChild(SItem(params))
-
-    return top
+# def _evolve(a: List):
+#     """
+#     Internal use only. This will parse the supplied menu 'tree'.
+#     """
+#     from metamenus.SItem import SItem   # TODO We have a cyclical import problem
+#
+#     top = SItem(a[0])
+#     il = 0
+#     cur = {il: top}
+#
+#     for i in range(1, len(a)):
+#
+#         params = a[i]
+#         level  = params[0].count(Configuration().indentation) - 1
+#
+#         if level > il:
+#             il += 1
+#             # Todo fix this !!
+#             # noinspection PyUnboundLocalVariable
+#             cur[il] = new_sItem
+#         elif level < il:
+#             il = level
+#
+#         new_sItem: SItem = cur[il].AddChild(SItem(params))
+#
+#     return top
 
 
 def _clean(s):
@@ -94,20 +92,21 @@ def _clean(s):
 
 
 class _mmPrep:
+    # noinspection SpellCheckingInspection
     """
     Generates a temporary file that can be read by gettext utilities in
     order to create a .po file with strings to be translated. This class is
-    called when you run metamenus from the command line.
+    called when you run mmprep from the command line.
 
     Usage:
      1. Make sure your menus are in a separate file and that the separate
         file in question contain only your menus;
 
      2. From a command line, type:
-          metamenus.py separate_file output_file
+          mmprep -m separate_file -o output_file
 
         where 'separate_file' is the python file containing the menu
-        'trees', and 'output_file' is the python-like file generated that
+        'trees', (do not include the .py suffix) and 'output_file' is the python-like file generated that
         can be parsed by gettext utilities.
 
     To get a .po file containing the translatable strings, put the
@@ -177,7 +176,7 @@ class _mmPrep:
         lines = []
         try:
             for menu in getattr(mod, obj):
-                top = _evolve(menu)
+                top = BaseMenuEx.evolve(menu)
                 lines.append(top.GetLabelText())
                 for child in top.GetChildren(True):
                     lines.append(child.GetLabelText())
@@ -193,7 +192,7 @@ class _mmPrep:
         parseError: bool = False
         lines = []
         try:
-            top = _evolve(getattr(mod, obj))
+            top = BaseMenuEx.evolve(getattr(mod, obj))
             lines.append(top.GetLabelText())
             for child in top.GetChildren(True):
                 lines.append(child.GetLabelText())
