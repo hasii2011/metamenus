@@ -20,12 +20,17 @@
 #    replace wx.ITEM_RADIO to "radio";
 # You may thus remove this import if your menu is in a separate file and 
 # doesn't use any wx object.
+
+from typing import Callable
+
 import wx
 
 # This is used in this example to get some bitmaps.
-import Demo_images
-bmp1 = Demo_images.bmp1.GetBitmap
-bmp2 = Demo_images.bmp2.GetBitmap
+from demo.Demo_images import bmp1
+from demo.Demo_images import bmp2
+
+allBmp: Callable = bmp1.GetBitmap
+noneBmp: Callable = bmp2.GetBitmap
 
 my_menubar = [
     [
@@ -49,8 +54,8 @@ my_menubar = [
         ['  &Copy\tCtrl+C'],
         ['  &Paste\tCtrl+V'],
         ['  Select'],
-        ['    All\tCtrl+A', {"bmpChecked": bmp1}],
-        ['    None',        {"bmpChecked": bmp2}],
+        ['    All\tCtrl+A', {"bmpChecked": allBmp}],
+        ['    None',        {"bmpChecked": noneBmp}],
         ['    -'],
         ['    Invert Selection'],
         ['  -'],

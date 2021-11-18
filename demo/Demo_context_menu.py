@@ -3,10 +3,13 @@
 # context menu used in Demo_metamenus, from the metamenus demo
 #
 # Written by E. A. Tacao <mailto@tacao.com.br>, (C) 2005... 2020
+from typing import Callable
 
-import Demo_images
-bmp1 = Demo_images.bmp1.GetBitmap
-bmp2 = Demo_images.bmp2.GetBitmap
+from demo.Demo_images import bmp1
+from demo.Demo_images import bmp2
+
+embedBmp: Callable = bmp1.GetBitmap
+cloudBmp: Callable = bmp2.GetBitmap
 
 my_context_menu = \
 [
@@ -15,8 +18,8 @@ my_context_menu = \
     ["  Hide less"], 
     ["    Panels"], 
     ["    Frames"], 
-    ["      Embed", {"bmp": bmp1}], 
-    ["      Cloud", {"bmpChecked": bmp2}], 
+    ["      Embed", {"bmp":        embedBmp}],
+    ["      Cloud", {"bmpChecked": cloudBmp}],
     ["  Colours..."],    
     ["  About"], 
     ["    Life"], 
@@ -25,8 +28,3 @@ my_context_menu = \
     ["  -"],        
     ["  Exit"]
 ]
-
-
-#
-##
-### eof
