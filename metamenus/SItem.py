@@ -30,16 +30,16 @@ class SItem:
 
         self.logger: Logger = getLogger(LOGGING_NAME)
 
-        self.parent = None
-        self.Id: int = NewId()
-        self.params = self._adjust(params)
+        self._parent = None
+        self._id: int = self._assignMenuId()
+        self.params  = self._adjust(params)
         self.children = []
 
-        self.label:         str = ''
-        self.labelText:     str = ''
-        self.tLabel:        str = ''
-        self.tLabelText:    str = ''
-        self.accelerator:   str = ''
+        self._label:        str = ''
+        self._labelText:    str = ''
+        self._tLabel:       str = ''
+        self._tLabelText:   str = ''
+        self._accelerator:  str = ''
 
         self.Update()
 
@@ -106,20 +106,20 @@ class SItem:
         """
         preLabel: str = self.params[0]
 
-        self.label     = preLabel.strip()
-        self.labelText = self.label.split("\t")[0].strip()
+        self._label     = preLabel.strip()
+        self._labelText = self._label.split("\t")[0].strip()
 
-        label, acc = (self.label.split("\t") + [''])[:2]
+        label, acc = (self._label.split("\t") + [''])[:2]
 
         self.tLabel_text = GetTranslation(label.strip())
-        self.accelerator = acc.strip()
-        if self.accelerator is None or self.accelerator == '':
-            self.tLabel = self.tLabel_text
+        self._accelerator = acc.strip()
+        if self._accelerator is None or self._accelerator == '':
+            self._tLabel = self.tLabel_text
         else:
-            self.tLabel = "\t".join([self.tLabel_text, self.accelerator])
+            self._tLabel = "\t".join([self.tLabel_text, self._accelerator])
 
     def AddChild(self, Item):
-        Item.parent = self
+        Item._parent = self
         self.children.append(Item)
         return Item
 
@@ -131,28 +131,28 @@ class SItem:
         return label
 
     def GetLabel(self):
-        return self.label
+        return self._label
 
     def GetLabelText(self):
-        return self.labelText
+        return self._labelText
 
     def GetLabelTranslation(self):
-        return self.tLabel
+        return self._tLabel
 
     def GetLabelTextTranslation(self):
         return self.tLabel_text
 
     def GetAccelerator(self):
-        return self.accelerator
+        return self._accelerator
 
     def GetId(self):
-        return self.Id
+        return self._id
 
     def GetParams(self):
         return self.params
 
     def GetParent(self):
-        return self.parent
+        return self._parent
 
     def GetChildren(self, recursive=False):
         def _walk(Item, r):
@@ -223,3 +223,12 @@ class SItem:
 
     def GetAllMethods(self):
         return self.all_methods
+
+    def _assignMenuId(self) -> int:
+
+        parent: SItem = self._parent
+        if parent is not None:
+            labelText = parent._labelText
+            self.logger.warning(f'{labelText}')
+
+        return NewId()

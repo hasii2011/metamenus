@@ -31,6 +31,8 @@
 # IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 #
+from typing import List
+
 from logging import Logger
 from logging import getLogger
 
@@ -40,9 +42,9 @@ from metamenus.Configuration import Configuration
 from metamenus.Constants import LOGGING_NAME
 
 
-def _evolve(a):
+def _evolve(a: List):
     """
-    Internal use only. This will parse the menu 'tree' supplied.
+    Internal use only. This will parse the supplied menu 'tree'.
     """
     from metamenus.SItem import SItem   # TODO We have a cyclical import problem
 

@@ -50,7 +50,7 @@ class MenuBarEx(BaseMenuEx, MenuBar):
         # 'fix' for https://github.com/wxWidgets/Phoenix/issues/1648
         self.x = []
 
-        self.logger.warning(f'{self._menus}')
+        self.logger.debug(f'{self._menus}')
         # For each menu...
         for a in self._menus:
             # Parse the menu 'tree' supplied.
