@@ -1,0 +1,31 @@
+{
+    "version": 1,
+    "disable_existing_loggers": "False",
+    "formatters": {
+        "simple": {
+            "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        },
+        "metaMenuSimple": {
+            "format": "%(asctime)s.%(msecs)06d - %(levelname)s: %(module)s: %(message)s",
+            "datefmt" : "%H:%M:%S"
+        }
+    },
+    "handlers": {
+        "consoleHandler": {
+            "class": "logging.StreamHandler",
+            "formatter": "metaMenuSimple",
+            "stream": "ext://sys.stdout"
+        }
+    },
+    "loggers": {
+        "root": {
+            "level": "ERROR",
+            "handlers": ["consoleHandler"],
+            "propagate": "False"
+        },
+        "metamenus": {
+            "level": "INFO",
+            "propagate": "False"
+        }
+    }
+}

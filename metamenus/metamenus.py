@@ -39,7 +39,7 @@ from logging import getLogger
 from metamenus import use_unidecode
 
 from metamenus.Configuration import Configuration
-from metamenus.Constants import LOGGING_NAME
+from metamenus.Constants import META_MENUS_LOGGING_NAME
 
 
 def _evolve(a: List):
@@ -53,6 +53,7 @@ def _evolve(a: List):
     cur = {il: top}
 
     for i in range(1, len(a)):
+
         params = a[i]
         level  = params[0].count(Configuration().indentation) - 1
 
@@ -63,7 +64,8 @@ def _evolve(a: List):
             cur[il] = new_sItem
         elif level < il:
             il = level
-        new_sItem = cur[il].AddChild(SItem(params))
+
+        new_sItem: SItem = cur[il].AddChild(SItem(params))
 
     return top
 
@@ -119,7 +121,7 @@ class _mmPrep:
         #
         # For use by developers
         #
-        self.logger: Logger = getLogger(LOGGING_NAME)
+        self.logger: Logger = getLogger(META_MENUS_LOGGING_NAME)
 
         self.logger.info(f'Parsing {filename}.py...')
 

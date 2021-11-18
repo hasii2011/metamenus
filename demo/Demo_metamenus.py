@@ -36,9 +36,17 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 
+import logging
+import logging.config
+
+import json
+
 import sys
 
+from pkg_resources import resource_filename
+
 import wx
+
 from wx import Locale
 from wx import Platform
 from wx import StaticLine
@@ -259,8 +267,13 @@ class mmTestFrame(wx.Frame):
 
 
 class MyApp(wx.App):
+
+    RESOURCES_PACKAGE_NAME:       str = 'demo.resources'
+    JSON_LOGGING_CONFIG_FILENAME: str = "loggingConfiguration.json"
+
     def OnInit(self):
-        
+
+        self._setUpLogging()
         # Find languages available on this system:
         self.available_languages = {}
         for i in [i for i in dir(wx) if i.startswith("LANGUAGE_")]:
@@ -275,6 +288,24 @@ class MyApp(wx.App):
 
         print(f'Demonstration running on platform - {Platform}')
         return True
+
+    def _setUpLogging(self):
+        """
+        """
+        loggingConfigFilename: str = self._findLoggingConfig()
+
+        with open(loggingConfigFilename, 'r') as loggingConfigurationFile:
+            configurationDictionary = json.load(loggingConfigurationFile)
+
+        logging.config.dictConfig(configurationDictionary)
+        logging.logProcesses = False
+        logging.logThreads = False
+
+    def _findLoggingConfig(self) -> str:
+
+        fqFileName = resource_filename(MyApp.RESOURCES_PACKAGE_NAME, MyApp.JSON_LOGGING_CONFIG_FILENAME)
+
+        return fqFileName
 
 
 if __name__ == '__main__':

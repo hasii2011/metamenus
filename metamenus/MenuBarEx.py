@@ -20,7 +20,7 @@ from metamenus import MenuExAfterEvent
 from metamenus import MenuExBeforeEvent
 
 from metamenus.BaseMenuEx import BaseMenuEx
-from metamenus.Constants import LOGGING_NAME
+from metamenus.Constants import META_MENUS_LOGGING_NAME
 from metamenus.SItem import SItem
 
 from metamenus.metamenus import _clean
@@ -39,7 +39,7 @@ class MenuBarEx(BaseMenuEx, MenuBar):
         """
         BaseMenuEx.__init__(self, *args, **kwargs)
 
-        self.logger: Logger = getLogger(LOGGING_NAME)
+        self.logger: Logger = getLogger(META_MENUS_LOGGING_NAME)
 
         strippedKWArgs = self._extractKeyWordValues(**kwargs)
         MenuBar.__init__(self, **strippedKWArgs)
@@ -52,9 +52,10 @@ class MenuBarEx(BaseMenuEx, MenuBar):
 
         self.logger.debug(f'{self._menus}')
         # For each menu...
-        for a in self._menus:
-            # Parse the menu 'tree' supplied.
-            top = _evolve(a)
+        for menuTreeDescription in self._menus:
+            # Parse the supplied menu 'tree'.
+            self.logger.info(f'Evolving: {menuTreeDescription}')
+            top = _evolve(menuTreeDescription)
 
             # Create these menus first...
             wxMenus = {top: Menu()}

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# menubar used in Demo_metamenus, from the metamenus demo
+# menu bar used in Demo_metamenus, from the metamenus demo
 #
 # Written by E. A. Tacao <mailto@tacao.com.br>, (C) 2005... 2020
 

@@ -18,7 +18,7 @@ from metamenus.metamenus import _clean
 from metamenus.types import CustomMethods
 
 from metamenus.Constants import _sep
-from metamenus.Constants import LOGGING_NAME
+from metamenus.Constants import META_MENUS_LOGGING_NAME
 
 
 class SItem:
@@ -28,7 +28,7 @@ class SItem:
     """
     def __init__(self, params):
 
-        self.logger: Logger = getLogger(LOGGING_NAME)
+        self.logger: Logger = getLogger(META_MENUS_LOGGING_NAME)
 
         self._parent = None
         self._id: int = self._assignMenuId()

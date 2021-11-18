@@ -21,7 +21,7 @@ from metamenus import MenuExAfterEvent
 from metamenus import MenuExBeforeEvent
 
 from metamenus.BaseMenuEx import BaseMenuEx
-from metamenus.Constants import LOGGING_NAME
+from metamenus.Constants import META_MENUS_LOGGING_NAME
 from metamenus.SItem import SItem
 
 from metamenus.metamenus import _evolve
@@ -40,7 +40,7 @@ class MenuEx(Menu, BaseMenuEx):
         """
         BaseMenuEx.__init__(self, *args, **kwargs)
 
-        self.logger: Logger = getLogger(LOGGING_NAME)
+        self.logger: Logger = getLogger(META_MENUS_LOGGING_NAME)
 
         strippedKWArgs = self._extractKeyWordValues(**kwargs)
         Menu.__init__(self, **strippedKWArgs)

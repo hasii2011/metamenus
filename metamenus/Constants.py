@@ -1,6 +1,6 @@
 
 
-LOGGING_NAME: str = 'metamenus'
+META_MENUS_LOGGING_NAME: str = 'metamenus'
 # More info on 'history' and 'README.md' files.
 
 # _sep is used internally only and is a substring that _cannot_
