@@ -52,18 +52,9 @@ from metamenus.types import MethodName
 
 class DemoFrame(Frame):
     def __init__(self):
-        Frame.__init__(self, None, ID_ANY, 'metamenus demo')
+        Frame.__init__(self, None, ID_ANY, 'metamenus Demonstration')
 
-        if Platform != THE_GREAT_MAC_PLATFORM:
-            # Fetch the snake, get this frame an icon
-            frame_icon = the_snake.GetIcon()
-            self.SetIcon(frame_icon)
-
-        if Platform != THE_GREAT_MAC_PLATFORM:
-            # Fetch the snake again, shrink it a bit, make it a task bar icon.
-            t_snake = Icon(the_snake.GetImage().Scale(16, 16).ConvertToBitmap())
-            self.tbIcon = DemoTaskBarIcon(self, t_snake)
-            self.tbIcon.Bind(EVT_TASKBAR_LEFT_DOWN, self.OnTaskbarLeftDown)
+        self._setupTaskBarIcons()
 
         # Not compulsory, but here we will test metamenus status messages
         self.CreateStatusBar()
@@ -220,3 +211,14 @@ class DemoFrame(Frame):
 
     def OnMB_FileExit(self):
         self.Destroy()
+
+    def _setupTaskBarIcons(self):
+        if Platform != THE_GREAT_MAC_PLATFORM:
+            # Fetch the snake, get this frame an icon
+            frame_icon = the_snake.GetIcon()
+            self.SetIcon(frame_icon)
+        if Platform != THE_GREAT_MAC_PLATFORM:
+            # Fetch the snake again, shrink it a bit, make it a task bar icon.
+            t_snake = Icon(the_snake.GetImage().Scale(16, 16).ConvertToBitmap())
+            self.tbIcon = DemoTaskBarIcon(self, t_snake)
+            self.tbIcon.Bind(EVT_TASKBAR_LEFT_DOWN, self.OnTaskbarLeftDown)

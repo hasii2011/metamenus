@@ -1,6 +1,5 @@
 
 from typing import Dict
-from typing import List
 
 from wx import ART_MENU
 from wx import ArtProvider
@@ -18,6 +17,16 @@ from metamenus.Configuration import Configuration
 
 from metamenus.types import CustomMethods
 
+from metamenus.internal.ITypes import MenuDescriptorList
+
+#
+# https://www.stefaanlippens.net/circular-imports-type-hints-python.html
+#
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from metamenus.SItem import SItem
+
 
 class BaseMenuEx:
     """
@@ -30,21 +39,29 @@ class BaseMenuEx:
         self._configuration: Configuration = Configuration()
 
     @classmethod
-    def evolve(cls, a: List):
+    def evolve(cls, menuDescriptorList: MenuDescriptorList) -> "SItem":
         """
+
         Internal use only. This will parse the supplied menu 'tree'.
         Class method because also used by the mmprep class that supports the
         mmprep CLI
+
+        Args:
+            menuDescriptorList:
+
+        Returns:  A top level SItem that is the MenuBar Menu entry;  The
+        .children attribute of this SItem are additional SItem entries
         """
         from metamenus.SItem import SItem  # TODO We have a cyclical import problem
 
-        top = SItem(a[0])
+        topLevelEntry: str = menuDescriptorList[0]
+        top: SItem = SItem(topLevelEntry)
         il = 0
         cur = {il: top}
 
-        for i in range(1, len(a)):
+        for i in range(1, len(menuDescriptorList)):
 
-            params = a[i]
+            params = menuDescriptorList[i]
             level = params[0].count(Configuration().indentation) - 1
 
             if level > il:

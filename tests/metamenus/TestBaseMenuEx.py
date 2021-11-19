@@ -1,4 +1,5 @@
 
+from typing import List
 from typing import cast
 
 from logging import Logger
@@ -8,16 +9,18 @@ from unittest import TestSuite
 from unittest import main as unitTestMain
 
 from metamenus.BaseMenuEx import BaseMenuEx
-from tests.TestBase import TestBase
+from metamenus.SItem import SItem
 
-# import the class you want to test here
-# from pytrek.tests.TestTemplate import TestTemplate
+from metamenus.internal.ITypes import MenuDescriptorList
+
+from tests.TestBase import TestBase
 
 
 class TestBaseMenuEx(TestBase):
     """
     """
-    testMenuBarDescriptor = [
+    # noinspection SpellCheckingInspection
+    testMenuBarDescriptor: MenuDescriptorList = MenuDescriptorList([
         [
             ['&File'],
             ['  &New\tCtrl+N'],
@@ -27,7 +30,7 @@ class TestBaseMenuEx(TestBase):
             ['  -'],
             ['  Publis&h\tCtrl+Shift+P']
         ]
-    ]
+    ])
 
     clsLogger: Logger = cast(Logger, None)
 
@@ -46,18 +49,54 @@ class TestBaseMenuEx(TestBase):
     def tearDown(self):
         pass
 
-    def testEvolve(self):
+    def testEvolveTopLevel(self):
         try:
             for mb in TestBaseMenuEx.testMenuBarDescriptor:
-                top = BaseMenuEx.evolve(a=mb)
+                top: SItem = BaseMenuEx.evolve(menuDescriptorList=mb)
+
                 self.assertIsNotNone(top, 'We should get something')
+
+                expectedLabel: str = TestBaseMenuEx.testMenuBarDescriptor[0][0][0]  # Yuck
+                actualLabel:   str = top.GetLabelText()
+                self.assertEqual(expectedLabel, actualLabel, 'Menu bar item mismatch')
+
+                expectedChildCount: int = len(TestBaseMenuEx.testMenuBarDescriptor[0]) - 1
+                actualChildCount:   int = len(top.GetChildren())
+                self.assertEqual(expectedChildCount, actualChildCount, 'Menu bar child count mismatch')
+
         except AttributeError as ae:
             self.logger.warning(f'{ae}')
 
+    def testEvolveChildren(self):
+        for mb in TestBaseMenuEx.testMenuBarDescriptor:
+            top: SItem = BaseMenuEx.evolve(menuDescriptorList=mb)
 
-    def testName2(self):
-        """Another test"""
-        pass
+            self.assertIsNotNone(top, 'We should get something')
+
+            children: List[SItem] = top.GetChildren()
+            self.logger.debug(f'{children}')
+            labels: List[str] = self._getLabels()
+            self.logger.warning(f'{labels=}')
+            for child in children:
+                actualLabel: str = child.GetLabelText()
+                self.assertTrue(actualLabel in labels, 'This menu entry did not get an SItem')
+
+    def _getLabels(self) -> List[str]:
+
+        labels: List[str] = []
+        for topMenuDescriptor in TestBaseMenuEx.testMenuBarDescriptor:
+            for menuDescriptor in topMenuDescriptor:
+                label: str = self._getLabel(menuDescriptor[0])
+                labels.append(label)
+
+        return labels
+
+    def _getLabel(self, menuDescriptor: str) -> str:
+
+        label:     str = menuDescriptor.strip()
+        labelText: str = label.split("\t")[0].strip()
+
+        return labelText
 
 
 def suite() -> TestSuite:

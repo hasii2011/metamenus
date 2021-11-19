@@ -1,4 +1,7 @@
 
+from typing import List
+from typing import NewType
+
 from logging import Logger
 from logging import getLogger
 
@@ -21,6 +24,9 @@ from metamenus.Constants import _sep
 from metamenus.Constants import META_MENUS_LOGGING_NAME
 
 
+SItems = NewType('SItems', List["SItem"])
+
+
 class SItem:
     """
     Internal use only. This provides a structure for parsing the 'trees'
@@ -33,7 +39,7 @@ class SItem:
         self._parent = None
         self._id: int = self._assignMenuId()
         self.params  = self._adjust(params)
-        self.children = []
+        self.children: SItems = SItems([])
 
         self._label:        str = ''
         self._labelText:    str = ''
@@ -155,7 +161,7 @@ class SItem:
     def GetParent(self):
         return self._parent
 
-    def GetChildren(self, recursive=False):
+    def GetChildren(self, recursive=False) -> SItems:
         def _walk(Item, r):
             for child in Item.GetChildren():
                 r.append(child)
@@ -233,3 +239,10 @@ class SItem:
             self.logger.warning(f'{labelText}')
 
         return NewIdRef()
+
+    def __str__(self) -> str:
+        return (
+            f'SItem: `{self._labelText}` '
+            f'`{self._id}` '
+            f'parent={self._parent} '
+        )
