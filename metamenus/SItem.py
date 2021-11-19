@@ -6,7 +6,7 @@ from wx import ITEM_CHECK
 from wx import ITEM_NORMAL
 from wx import ITEM_RADIO
 
-from wx import NewId
+from wx import NewIdRef
 from wx import GetTranslation
 
 # TODO ask tacao if we can avoid using these
@@ -106,6 +106,7 @@ class SItem:
         """
         preLabel: str = self.params[0]
 
+        # if isinstance(preLabel, str):
         self._label     = preLabel.strip()
         self._labelText = self._label.split("\t")[0].strip()
 
@@ -231,4 +232,4 @@ class SItem:
             labelText = parent._labelText
             self.logger.warning(f'{labelText}')
 
-        return NewId()
+        return NewIdRef()

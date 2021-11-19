@@ -40,34 +40,6 @@ from metamenus.BaseMenuEx import BaseMenuEx
 from metamenus.Constants import META_MENUS_LOGGING_NAME
 
 
-# def _evolve(a: List):
-#     """
-#     Internal use only. This will parse the supplied menu 'tree'.
-#     """
-#     from metamenus.SItem import SItem   # TODO We have a cyclical import problem
-#
-#     top = SItem(a[0])
-#     il = 0
-#     cur = {il: top}
-#
-#     for i in range(1, len(a)):
-#
-#         params = a[i]
-#         level  = params[0].count(Configuration().indentation) - 1
-#
-#         if level > il:
-#             il += 1
-#             # Todo fix this !!
-#             # noinspection PyUnboundLocalVariable
-#             cur[il] = new_sItem
-#         elif level < il:
-#             il = level
-#
-#         new_sItem: SItem = cur[il].AddChild(SItem(params))
-#
-#     return top
-
-
 def _clean(s):
     """
     Internal use only. Tries to remove all accented characters from a string.
