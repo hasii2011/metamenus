@@ -13,6 +13,7 @@ from wx import ITEM_RADIO
 
 from metamenus.BaseMenuEx import BaseMenuEx
 from metamenus.SItem import SItem
+from metamenus.SItem import SItems
 
 from metamenus.internal.ITypes import MenuBarDescriptor
 
@@ -45,6 +46,28 @@ class TestBaseMenuEx(TestBase):
             ['  &Eggs',        ITEM_CHECK],
         ]
     ])
+
+    DEEPEST_ITEM_NAME: str = 'Item.2'
+
+    testDeepMenuBarDescriptor: MenuBarDescriptor = MenuBarDescriptor([
+        [
+            ['Top'],
+            ['  Item.1'],
+            ['    Item.1.1'],
+            ['    Item.1.2'],
+            ['  Item.2'],           # Builds the deepest number of items
+            ['    Item.2.1'],
+            ['    Item.2.2'],
+            ['      Item.2.2.1'],
+            ['      Item.2.2.2'],
+            ['        Item.2.2.2.1'],
+            ['        Item.2.2.2.2'],
+            ['  Item.3'],
+            ['    Item.3.1'],
+            ['    Item.3 2'],
+            ['  Item.4'],
+        ]
+    ])
     clsLogger: Logger = cast(Logger, None)
 
     @classmethod
@@ -65,7 +88,7 @@ class TestBaseMenuEx(TestBase):
     def testEvolveFileMenuBar(self):
         try:
             for mb in TestBaseMenuEx.testFileMenuBarDescriptor:
-                top: SItem = BaseMenuEx.evolve(menuDescriptorList=mb)
+                top: SItem = BaseMenuEx.evolve(menuBarDescriptor=mb)
 
                 self.assertIsNotNone(top, 'We should get something')
 
@@ -82,7 +105,7 @@ class TestBaseMenuEx(TestBase):
 
     def testEvolveFileMenuBarChildren(self):
         for mb in TestBaseMenuEx.testFileMenuBarDescriptor:
-            top: SItem = BaseMenuEx.evolve(menuDescriptorList=mb)
+            top: SItem = BaseMenuEx.evolve(menuBarDescriptor=mb)
 
             self.assertIsNotNone(top, 'We should get something')
 
@@ -97,13 +120,37 @@ class TestBaseMenuEx(TestBase):
     def testEvolveOptionsMenuBar(self):
 
         for mb in TestBaseMenuEx.testOptionsMenuBarDescriptor:
-            top:                SItem = BaseMenuEx.evolve(menuDescriptorList=mb)
+            top: SItem = BaseMenuEx.evolve(menuBarDescriptor=mb)
 
             self.assertIsNotNone(top, 'We should get something')
 
             expectedLabel: str = TestBaseMenuEx.testOptionsMenuBarDescriptor[0][0][0]  # Yuck
             actualLabel:   str = top.GetLabelText()
             self.assertEqual(expectedLabel, actualLabel, 'Options Menu bar item mismatch')
+
+    def testEvolveDeepMenuBar(self):
+
+        mb: MenuBarDescriptor = TestBaseMenuEx.testDeepMenuBarDescriptor[0]
+        top: SItem            = BaseMenuEx.evolve(menuBarDescriptor=mb)
+
+        self.assertIsNotNone(top, 'We should get something for our deep menu')
+
+        deepSItem: SItem = self._findTopDeepSItems(top=top)
+        self.assertIsNotNone(deepSItem, 'Oops did the names change!')
+
+        expectedName: str = TestBaseMenuEx.DEEPEST_ITEM_NAME
+        actualName:   str = deepSItem.GetLabel()
+        self.assertEqual(expectedName, actualName, 'I could not find that SItem')
+
+        sItems: SItems = deepSItem.GetChildWithChildren()
+
+        self.assertTrue(len(sItems) == 2, 'Incorrect number of child items that also have children')
+        childLabels: List[str] = ['Item.2.2', 'Item.2.2.2']
+        for foundSItem in sItems:
+            actualLabel: str = foundSItem.GetLabel()
+            self.assertIn(actualLabel, childLabels, 'This is not one of our nested items')
+
+        # self.assertEqual('Item.2.2', sItem.GetLabel(), 'Incorrect first level child')
 
     def _getLabels(self) -> List[str]:
 
@@ -121,6 +168,28 @@ class TestBaseMenuEx(TestBase):
         labelText: str = label.split("\t")[0].strip()
 
         return labelText
+
+    def _findTopDeepSItems(self, top: SItem) -> SItem:
+        """
+        I hard code the name for now;
+        Did I mention that I hate recursion !!!
+
+        Returns:  The SItem
+        """
+        deepSItem:       SItem  = cast(SItem, None)
+        children:        SItems = top.GetChildren()
+
+        for childItem in children:
+            childLabel: str = childItem.GetLabel()
+            self.logger.warning(f'{childLabel=}')
+            if childLabel == TestBaseMenuEx.DEEPEST_ITEM_NAME:
+                return childItem
+            else:
+                deepSItem = self._findTopDeepSItems(childItem)
+                if deepSItem is not None:
+                    break
+
+        return deepSItem
 
 
 def suite() -> TestSuite:

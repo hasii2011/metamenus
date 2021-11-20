@@ -2,6 +2,9 @@
 from typing import Dict
 from typing import cast
 
+from logging import Logger
+from logging import getLogger
+
 from wx import ART_MENU
 from wx import ArtProvider
 
@@ -15,6 +18,7 @@ from wx import NullBitmap
 from wx import NullFont
 
 from metamenus.Configuration import Configuration
+from metamenus.Constants import META_MENUS_LOGGING_NAME
 
 from metamenus.types import CustomMethods
 
@@ -33,6 +37,8 @@ class BaseMenuEx:
     """
     A 'mixin' class to get some common attributes and behavior in a common place
     """
+    clsLogger: Logger = getLogger(META_MENUS_LOGGING_NAME)
+
     def __init__(self,  *args, **kwargs):
 
         self._parent, self._menus = args    # TODO fix this with typing
@@ -40,7 +46,7 @@ class BaseMenuEx:
         self._configuration: Configuration = Configuration()
 
     @classmethod
-    def evolve(cls, menuDescriptorList: MenuBarDescriptor) -> "SItem":
+    def evolve(cls, menuBarDescriptor: MenuBarDescriptor) -> "SItem":
         """
 
         Internal use only. This will parse the supplied menu 'tree'.
@@ -48,32 +54,36 @@ class BaseMenuEx:
         mmprep CLI
 
         Args:
-            menuDescriptorList:
+            menuBarDescriptor:
 
         Returns:  A top level SItem that is the MenuBar Menu entry;  The
         .children attribute of this SItem are additional SItem entries
         """
         from metamenus.SItem import SItem  # TODO We have a cyclical import problem
 
-        topLevelEntry: str   = cast(str, menuDescriptorList[0])
+        topLevelEntry: str   = cast(str, menuBarDescriptor[0])
         top:           SItem = SItem(topLevelEntry)
-        il = 0
-        cur = {il: top}
+        indentLevel = 0
+        cur = {indentLevel: top}
 
-        for i in range(1, len(menuDescriptorList)):
+        for i in range(1, len(menuBarDescriptor)):
 
-            params = menuDescriptorList[i]
+            BaseMenuEx.clsLogger.debug(f'{indentLevel=}')
+            params = menuBarDescriptor[i]
             level = params[0].count(Configuration().indentation) - 1
 
-            if level > il:
-                il += 1
+            if level > indentLevel:
+                indentLevel += 1
                 # Todo fix this !!
                 # noinspection PyUnboundLocalVariable
-                cur[il] = new_sItem
-            elif level < il:
-                il = level
+                cur[indentLevel] = newSItem
+            elif level < indentLevel:
+                indentLevel = level
 
-            new_sItem: SItem = cur[il].AddChild(SItem(params))
+            currentTop:   SItem = cur[indentLevel]
+            currentChild: SItem = SItem(params)
+            newSItem:     SItem = currentTop.AddChild(currentChild)
+            # new_sItem: SItem = cur[il].AddChild(SItem(params))
 
         return top
 
