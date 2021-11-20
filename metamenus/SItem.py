@@ -8,17 +8,21 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
+from wx import ID_ABOUT
+from wx import ID_EXIT
 from wx import ITEM_CHECK
 from wx import ITEM_NORMAL
 from wx import ITEM_RADIO
 
 from wx import NewIdRef
 from wx import GetTranslation
+from wx import Platform
 
 # TODO ask tacao if we can avoid using these
 # noinspection PyProtectedMember
 from wx._core import ItemKind
 
+from metamenus.Constants import THE_GREAT_MAC_PLATFORM
 from metamenus.metamenus import _clean
 
 from metamenus.types import CustomMethods
@@ -29,6 +33,10 @@ from metamenus.Constants import META_MENUS_LOGGING_NAME
 
 SItems      = NewType('SItems', List["SItem"])
 MethodNames = NewType('MethodNames', Dict[str, int])
+
+SPECIAL_EXIT_MENU_TEXT:  str = 'Exit'
+SPECIAL_QUIT_MENU_TEXT:  str = 'Quit'
+SPECIAL_ABOUT_MENU_TEXT: str = 'About'
 
 
 class SItem:
@@ -41,7 +49,7 @@ class SItem:
         self.logger: Logger = getLogger(META_MENUS_LOGGING_NAME)
 
         self._parent:   SItem  = cast(SItem, None)
-        self._params:    Tuple  = self._adjust(params)
+        self._params:   Tuple  = self._adjust(params)
         self._children: SItems = SItems([])
 
         self._label:        str = ''
@@ -54,7 +62,7 @@ class SItem:
         self._allMethods: MethodNames = MethodNames({})
 
         self.Update()
-        self._id:       int    = self._assignMenuId()
+        self._id: int = self._assignMenuId()
 
     def _adjust(self, params):
         """
@@ -264,13 +272,29 @@ class SItem:
         return self._allMethods
 
     def _assignMenuId(self) -> int:
+        """
+        Ideally, I would like to know that this SItem has a parent
+        or not in order to use the special OS X identifies
 
-        parent: SItem = self._parent
-        if parent is not None:
-            labelText = parent._labelText
-            self.logger.warning(f'{labelText}')
+        Returns:
+        """
+        # parent: SItem = self._parent
+        # if parent is not None:
+        if Platform == THE_GREAT_MAC_PLATFORM:
+            labelText = self._cleanup(self._labelText)
+            self.logger.debug(f'{labelText}')
+            if labelText == SPECIAL_ABOUT_MENU_TEXT:
+                return ID_ABOUT
+            if labelText == SPECIAL_EXIT_MENU_TEXT or labelText == SPECIAL_QUIT_MENU_TEXT:
+                return ID_EXIT
 
         return NewIdRef()
+
+    def _cleanup(self, menuLabel: str) -> str:
+
+        menuLabel = menuLabel.replace('&', '')
+
+        return menuLabel
 
     def __str__(self) -> str:
         return (
