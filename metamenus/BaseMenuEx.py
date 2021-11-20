@@ -1,5 +1,6 @@
 
 from typing import Dict
+from typing import cast
 
 from wx import ART_MENU
 from wx import ArtProvider
@@ -17,7 +18,7 @@ from metamenus.Configuration import Configuration
 
 from metamenus.types import CustomMethods
 
-from metamenus.internal.ITypes import MenuDescriptorList
+from metamenus.internal.ITypes import MenuBarDescriptor
 
 #
 # https://www.stefaanlippens.net/circular-imports-type-hints-python.html
@@ -39,7 +40,7 @@ class BaseMenuEx:
         self._configuration: Configuration = Configuration()
 
     @classmethod
-    def evolve(cls, menuDescriptorList: MenuDescriptorList) -> "SItem":
+    def evolve(cls, menuDescriptorList: MenuBarDescriptor) -> "SItem":
         """
 
         Internal use only. This will parse the supplied menu 'tree'.
@@ -54,8 +55,8 @@ class BaseMenuEx:
         """
         from metamenus.SItem import SItem  # TODO We have a cyclical import problem
 
-        topLevelEntry: str = menuDescriptorList[0]
-        top: SItem = SItem(topLevelEntry)
+        topLevelEntry: str   = cast(str, menuDescriptorList[0])
+        top:           SItem = SItem(topLevelEntry)
         il = 0
         cur = {il: top}
 

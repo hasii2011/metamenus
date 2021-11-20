@@ -26,6 +26,11 @@
         "tests": {
             "level": "INFO",
             "propagate": "False"
+        },
+        "metamenus": {
+            "level": "INFO",
+            "propagate": "False"
         }
+
     }
 }

@@ -4,4 +4,4 @@
 from typing import List
 from typing import NewType
 
-MenuDescriptorList = NewType('MenuDescriptorList', List)
+MenuBarDescriptor = NewType('MenuBarDescriptor', List[List])
