@@ -35,7 +35,7 @@ class TestBaseMenuEx(TestBase):
         ]
     ])
 
-    testOptionsMenuBarDescriptor: MenuBarDescriptor = MenuBarDescriptor(
+    testOptionsMenuBarDescriptor: MenuBarDescriptor = MenuBarDescriptor([
         [
             ['&Options'],
             ['  &Foo',         ("Foo status bar text", ITEM_RADIO)],
@@ -44,7 +44,7 @@ class TestBaseMenuEx(TestBase):
             ['  &Spam',        "check"],
             ['  &Eggs',        ITEM_CHECK],
         ]
-    )
+    ])
     clsLogger: Logger = cast(Logger, None)
 
     @classmethod
@@ -71,7 +71,7 @@ class TestBaseMenuEx(TestBase):
 
                 expectedLabel: str = TestBaseMenuEx.testFileMenuBarDescriptor[0][0][0]  # Yuck
                 actualLabel:   str = top.GetLabelText()
-                self.assertEqual(expectedLabel, actualLabel, 'Menu bar item mismatch')
+                self.assertEqual(expectedLabel, actualLabel, 'File Menu bar item mismatch')
 
                 expectedChildCount: int = len(TestBaseMenuEx.testFileMenuBarDescriptor[0]) - 1
                 actualChildCount:   int = len(top.GetChildren())
@@ -93,6 +93,17 @@ class TestBaseMenuEx(TestBase):
             for child in children:
                 actualLabel: str = child.GetLabelText()
                 self.assertTrue(actualLabel in labels, 'This menu entry did not get an SItem')
+
+    def testEvolveOptionsMenuBar(self):
+
+        for mb in TestBaseMenuEx.testOptionsMenuBarDescriptor:
+            top:                SItem = BaseMenuEx.evolve(menuDescriptorList=mb)
+
+            self.assertIsNotNone(top, 'We should get something')
+
+            expectedLabel: str = TestBaseMenuEx.testOptionsMenuBarDescriptor[0][0][0]  # Yuck
+            actualLabel:   str = top.GetLabelText()
+            self.assertEqual(expectedLabel, actualLabel, 'Options Menu bar item mismatch')
 
     def _getLabels(self) -> List[str]:
 
