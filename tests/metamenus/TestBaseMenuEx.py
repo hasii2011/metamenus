@@ -112,7 +112,7 @@ class TestBaseMenuEx(TestBase):
             children: List[SItem] = top.GetChildren()
             self.logger.debug(f'{children}')
             labels: List[str] = self._getLabels()
-            self.logger.warning(f'{labels=}')
+            self.logger.debug(f'{labels=}')
             for child in children:
                 actualLabel: str = child.GetLabelText()
                 self.assertTrue(actualLabel in labels, 'This menu entry did not get an SItem')
@@ -150,8 +150,6 @@ class TestBaseMenuEx(TestBase):
             actualLabel: str = foundSItem.GetLabel()
             self.assertIn(actualLabel, childLabels, 'This is not one of our nested items')
 
-        # self.assertEqual('Item.2.2', sItem.GetLabel(), 'Incorrect first level child')
-
     def _getLabels(self) -> List[str]:
 
         labels: List[str] = []
@@ -181,7 +179,7 @@ class TestBaseMenuEx(TestBase):
 
         for childItem in children:
             childLabel: str = childItem.GetLabel()
-            self.logger.warning(f'{childLabel=}')
+            self.logger.debug(f'{childLabel=}')
             if childLabel == TestBaseMenuEx.DEEPEST_ITEM_NAME:
                 return childItem
             else:

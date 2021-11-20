@@ -1,6 +1,9 @@
 
+from typing import Dict
 from typing import List
 from typing import NewType
+from typing import Tuple
+from typing import cast
 
 from logging import Logger
 from logging import getLogger
@@ -24,7 +27,8 @@ from metamenus.Constants import _sep
 from metamenus.Constants import META_MENUS_LOGGING_NAME
 
 
-SItems = NewType('SItems', List["SItem"])
+SItems      = NewType('SItems', List["SItem"])
+MethodNames = NewType('MethodNames', Dict[str, int])
 
 
 class SItem:
@@ -36,10 +40,9 @@ class SItem:
 
         self.logger: Logger = getLogger(META_MENUS_LOGGING_NAME)
 
-        self._parent = None
-        self._id: int = self._assignMenuId()
-        self.params  = self._adjust(params)
-        self.children: SItems = SItems([])
+        self._parent:   SItem  = cast(SItem, None)
+        self._params:    Tuple  = self._adjust(params)
+        self._children: SItems = SItems([])
 
         self._label:        str = ''
         self._labelText:    str = ''
@@ -47,7 +50,11 @@ class SItem:
         self._tLabelText:   str = ''
         self._accelerator:  str = ''
 
+        self._methodName: str  = ''
+        self._allMethods: MethodNames = MethodNames({})
+
         self.Update()
+        self._id:       int    = self._assignMenuId()
 
     def _adjust(self, params):
         """
@@ -110,7 +117,7 @@ class SItem:
 
         Not actually using all of them right now, but maybe later
         """
-        preLabel: str = self.params[0]
+        preLabel: str = self._params[0]
 
         # if isinstance(preLabel, str):
         self._label     = preLabel.strip()
@@ -118,17 +125,26 @@ class SItem:
 
         label, acc = (self._label.split("\t") + [''])[:2]
 
-        self.tLabel_text = GetTranslation(label.strip())
+        self._tLabelText = GetTranslation(label.strip())
         self._accelerator = acc.strip()
         if self._accelerator is None or self._accelerator == '':
-            self._tLabel = self.tLabel_text
+            self._tLabel = self._tLabelText
         else:
-            self._tLabel = "\t".join([self.tLabel_text, self._accelerator])
+            self._tLabel = "\t".join([self._tLabelText, self._accelerator])
 
-    def AddChild(self, Item):
-        Item._parent = self
-        self.children.append(Item)
-        return Item
+    def AddChild(self, item: 'SItem'):
+        """
+        Adds it to this SItem and updates the input item's parent attribute
+
+        Args:
+            item: The SItem to include as this SItem's child
+
+        Returns:  The same item updated
+
+        """
+        item._parent = self
+        self._children.append(item)
+        return item
 
     def GetRealLabel(self, i18n):
         if i18n:
@@ -137,7 +153,7 @@ class SItem:
             label = self.GetLabel()
         return label
 
-    def GetLabel(self):
+    def GetLabel(self) -> str:
         return self._label
 
     def GetLabelText(self):
@@ -147,16 +163,16 @@ class SItem:
         return self._tLabel
 
     def GetLabelTextTranslation(self):
-        return self.tLabel_text
+        return self._tLabelText
 
-    def GetAccelerator(self):
+    def GetAccelerator(self) -> str:
         return self._accelerator
 
-    def GetId(self):
+    def GetId(self) -> int:
         return self._id
 
     def GetParams(self):
-        return self.params
+        return self._params
 
     def GetParent(self):
         return self._parent
@@ -170,12 +186,12 @@ class SItem:
             return r
 
         if not recursive:
-            return self.children
+            return self._children
         else:
             return _walk(self, [])
 
-    def HasChildren(self):
-        return bool(self.children)
+    def HasChildren(self) -> bool:
+        return bool(self._children)
 
     def GetChildWithChildren(self):
         def _walk(Item, r):
@@ -197,39 +213,55 @@ class SItem:
 
     def GetPath(self):
         this = self
-        path = this.GetLabelText()
+        path: str = this.GetLabelText()
 
         while this.GetParent() is not None:
             this = this.GetParent()
-            path = "%s %s %s" % (this.GetLabelText(), _sep, path)
+            # path = "%s %s %s" % (this.GetLabelText(), _sep, path)
+            path = f'{this.GetLabelText()} {_sep} {path}'
 
         return path
 
     # noinspection SpellCheckingInspection
     def SetMethod(self, prefix: str, customMethods: CustomMethods):
+        """
+
+        Args:
+            prefix:         The default prefix to use
+            customMethods:  The potential custom methods for this SItem
+        """
 
         menuName = _clean(self.GetPath())
 
-        # noinspection SpellCheckingInspection
-        method_custom = customMethods.get(menuName)
-        method_default = prefix + menuName
+        customMethodName:  str = cast(str, customMethods.get(menuName))  # The return is MenuName
+        defaultMethodName: str = prefix + menuName
 
-        # noinspection SpellCheckingInspection
-        # If a custfunc was passed here, use it; otherwise we'll use a
+        # If a custom method was passed here, use it; otherwise we'll use a
         # default method name when this menu item is selected.
-        self.method = method_custom or method_default
+        if customMethodName is None:
+            self._methodName = defaultMethodName
+        else:
+            self._methodName = customMethodName
 
-        # We also store a reference to all method names that the public
-        # methods can address.
-        self.all_methods = {method_custom: self.GetId(),
-                            method_default: self.GetId(),
-                            menuName: self.GetId()}
+        # We also store a reference to all method names that the public methods can address.
+        self._allMethods = MethodNames(
+            {
+                customMethodName:  self.GetId(),
+                defaultMethodName: self.GetId(),
+                menuName:       self.GetId()
+            }
+        )
+        self.logger.debug(f'{self._allMethods=}')
 
-    def GetMethod(self):
-        return self.method
+    def GetMethod(self) -> str:
+        """
+        TODO rename to GetMethodName
+        Returns: The method name
+        """
+        return self._methodName
 
-    def GetAllMethods(self):
-        return self.all_methods
+    def GetAllMethods(self) -> MethodNames:
+        return self._allMethods
 
     def _assignMenuId(self) -> int:
 
@@ -244,5 +276,6 @@ class SItem:
         return (
             f'SItem: `{self._labelText}` '
             f'`{self._id}` '
+            f'path: `{self.GetPath()}` '
             f'parent={self._parent} '
         )
