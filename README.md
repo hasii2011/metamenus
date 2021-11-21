@@ -1,5 +1,7 @@
 [![Build Status](https://app.travis-ci.com/hasii2011/metamenus.svg?branch=master)](https://app.travis-ci.com/hasii2011/metamenus)
 
+[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
+
 # Introduction
 
 This package was forked by [Humberto A. Sanchez II](https://hsanchezii.wordpress.com) 
