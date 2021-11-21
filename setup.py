@@ -9,7 +9,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="metamenus",
-    version="0.14.2",
+    version="0.14.3",
     author='E.A. Tacao',
     author_email='mailto@tacao.com.br',
     maintainer='Humberto Sanchez II',
@@ -19,7 +19,8 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/hasii2011/metamenus",
     packages=[
-        'metamenus'
+        'metamenus',
+        'metamenus.internal'
     ],
     package_data={'metamenus.resources': ['loggingConfiguration.json', 'loggingConfiguration.json']},
     include_package_data=True,
