@@ -1,4 +1,6 @@
 
+from sys import path as sysPath
+
 from click import command
 from click import option
 from click import version_option
@@ -8,6 +10,8 @@ from metamenus.metamenus import _mmPrep
 __author__  = "E. A. Tacao <mailto |at| tacao.com.br>"
 __date__    = "15 Sep 2020, 19:27 GMT-03:00"
 __version__ = "0.13"
+
+sysPath.append(".")
 
 
 @command()
