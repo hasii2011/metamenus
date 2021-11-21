@@ -138,17 +138,17 @@ class SItem:
         if self._accelerator is None or self._accelerator == '':
             self._tLabel = self._tLabelText
         else:
-            self._tLabel = "\t".join([self._tLabelText, self._accelerator])
+            # self._tLabel = "\t".join([self._tLabelText, self._accelerator])
+            self._tLabel = f'{self._tLabelText}\t{self._accelerator}'
 
     def AddChild(self, item: 'SItem'):
         """
-        Adds it to this SItem and updates the input item's parent attribute
+        Adds `item` to this SItem and updates the input item's parent attribute
 
         Args:
             item: The SItem to include as this SItem's child
 
         Returns:  The same item updated
-
         """
         item._parent = self
         self._children.append(item)
@@ -274,7 +274,7 @@ class SItem:
     def _assignMenuId(self) -> int:
         """
         Ideally, I would like to know that this SItem has a parent
-        or not in order to use the special OS X identifies
+        or not in order to use the special OS X identifiers
 
         Returns:
         """

@@ -9,8 +9,10 @@ from unittest import TestSuite
 from unittest import main as unitTestMain
 
 from wx import ITEM_RADIO
+from wx import RED
 
 from metamenus.SItem import MethodNames
+from metamenus.SItem import SItems
 from metamenus.types import CustomMethods
 from metamenus.types import MenuName
 from metamenus.types import MethodName
@@ -43,18 +45,21 @@ class TestSItem(TestBase):
     def tearDown(self):
         pass
 
-    def testUpdate(self):
+    def testUpdateLabelTextTranslated(self):
         """
-        Tests basic construction because Update is called during class
-        initialization
+        Tests basic construction because Update is called during class initialization
         """
-        pass
-        # ['&Edit'],
-        # ['  Cu&t\tCtrl+X'],
-        # ['  &Copy\tCtrl+C'],
-        # ['  &Paste\tCtrl+V'],
-        # ['  -'],
-        # ['  Delete\tDel', ("Information on deletion",), {"fgColour": RED}],
+        expectedFullTranslatedLabels: List[str] = [
+            'Cu&t\tCtrl+X',
+            '&Copy\tCtrl+C',
+            '&Paste\tCtrl+V',
+            '-',
+            'Delete\tDel'
+        ]
+        sItems: SItems = self._makeUpdateTestSItems()
+        for sItem in sItems:
+            tLabelTest: str = sItem.GetLabelTranslation()
+            self.assertIn(tLabelTest, expectedFullTranslatedLabels, 'Mismatch')
 
     def testGetPath(self):
 
@@ -130,6 +135,30 @@ class TestSItem(TestBase):
         childSItem = parentSItem.AddChild(childSItem)
 
         return TestSItems(parentSItem=parentSItem, childSItem=childSItem)
+
+    def _makeUpdateTestSItems(self) -> SItems:
+        """
+
+        Returns: A list of child SItems
+        """
+        parentParams:   List[str] = ['&Edit']
+        childrenParams: List[List[str]] = [
+            ['  Cu&t\tCtrl+X'],
+            ['  &Copy\tCtrl+C'],
+            ['  &Paste\tCtrl+V'],
+            ['  -'],
+            ['  Delete\tDel', ("Delete Help String",), {"fgColour": RED}]
+        ]
+        sItems: SItems = SItems([])
+        parentSItem: SItem = SItem(params=parentParams)
+        for childParam in childrenParams:
+            childSItem: SItem = SItem(params=childParam)
+
+            childSItem = parentSItem.AddChild(childSItem)
+            sItems.append(childSItem)
+        self.logger.warning(f'{sItems}')
+
+        return sItems
 
 
 def suite() -> TestSuite:

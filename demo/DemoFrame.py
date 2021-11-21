@@ -40,7 +40,7 @@ from demo.Demo_context_menu import my_context_menu
 from metamenus.Constants import THE_GREAT_MAC_PLATFORM
 
 from demo.Demo_images import the_snake
-from demo.Demo_menubar import my_menubar
+from demo.Demo_menubar import DemonstrationMenuBar
 
 from metamenus.MenuBarEx import MenuBarEx
 from metamenus.MenuEx import MenuEx
@@ -77,7 +77,7 @@ class DemoFrame(Frame):
             MenuName("FileSave"):     MethodName("onSave"),
             MenuName("FileCloseAll"): MethodName("onCloseAll")
         })
-        self.mb = MenuBarEx(self, my_menubar, customMethods=customMethods)
+        self.mb = MenuBarEx(self, DemonstrationMenuBar, customMethods=customMethods)
         panel = Panel(self)
 
         sizer = GridBagSizer()

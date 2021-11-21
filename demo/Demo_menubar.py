@@ -29,10 +29,10 @@ import wx
 from demo.Demo_images import bmp1
 from demo.Demo_images import bmp2
 
-allBmp: Callable = bmp1.GetBitmap
+allBmp: Callable  = bmp1.GetBitmap
 noneBmp: Callable = bmp2.GetBitmap
 
-my_menubar = [
+DemonstrationMenuBar = [
     [
         ['&File'],
         ['  &New\tCtrl+N'],          
@@ -59,7 +59,7 @@ my_menubar = [
         ['    -'],
         ['    Invert Selection'],
         ['  -'],
-        ['  Delete\tDel',  ("Information on deletion", ), {"fgColour": wx.RED}],
+        ['  Delete\tDel',  ("Delete Help String", ), {"fgColour": wx.RED}],
     ],
 
     [

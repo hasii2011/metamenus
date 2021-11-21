@@ -130,7 +130,9 @@ class BaseMenuEx:
 
             else:
                 args = (wxMenus[k], Id, label) + args
-                item = MenuItem(*args)
+                #
+                # parentMenu=None, id=ID_SEPARATOR, text="", helpString="", kind=ITEM_NORMAL, subMenu=None)¶
+                item: MenuItem = MenuItem(*args)
                 item = self._process_kwargs(item, kwargs, margin, font)
                 wxMenus[k].Append(item)
 
