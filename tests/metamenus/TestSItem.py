@@ -43,6 +43,19 @@ class TestSItem(TestBase):
     def tearDown(self):
         pass
 
+    def testUpdate(self):
+        """
+        Tests basic construction because Update is called during class
+        initialization
+        """
+        pass
+        # ['&Edit'],
+        # ['  Cu&t\tCtrl+X'],
+        # ['  &Copy\tCtrl+C'],
+        # ['  &Paste\tCtrl+V'],
+        # ['  -'],
+        # ['  Delete\tDel', ("Information on deletion",), {"fgColour": RED}],
+
     def testGetPath(self):
 
         testSItems: TestSItems = self._makeTestSItems()
