@@ -9,7 +9,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="metamenus",
-    version="0.14.1",
+    version="0.14.2",
     author='E.A. Tacao',
     author_email='mailto@tacao.com.br',
     maintainer='Humberto Sanchez II',
@@ -26,6 +26,6 @@ setup(
     install_requires=['wxPython', 'click'],
     entry_points='''
         [console_scripts]
-        mmprep=mmprep:commandHandler
+        mmprep=metamenus.mmprep:commandHandler
     ''',
 )

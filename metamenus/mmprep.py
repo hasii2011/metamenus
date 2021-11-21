@@ -17,7 +17,7 @@ __version__ = "0.13"
 def commandHandler(menu_module: str, output_file: str):
     from sys import path
 
-    path.append('.')
+    path.append('..')
 
     _mmPrep(filename=menu_module, output_file=output_file)
 
