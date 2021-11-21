@@ -1,3 +1,5 @@
+[![Build Status](https://app.travis-ci.com/hasii2011/metamenus.svg?branch=master)](https://app.travis-ci.com/hasii2011/metamenus)
+
 # Introduction
 
 This package was forked by [Humberto A. Sanchez II](https://hsanchezii.wordpress.com) 
