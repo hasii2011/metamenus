@@ -34,7 +34,7 @@ noneBmp: Callable = bmp2.GetBitmap
 
 DemonstrationMenuBar = [
     [
-        ['&File'],
+        ['&File'],  # the first MenuEx line is always the menu title.
         ['  &New\tCtrl+N'],          
         ['  &Open...\tCtrl+O'],
         ['  &Save\tCtrl+S'],

@@ -1,6 +1,12 @@
+
+from typing import Union
+from typing import Any
 from typing import List
+from typing import Tuple
 from typing import cast
+
 from collections import namedtuple
+from collections import Collection
 
 from logging import Logger
 from logging import getLogger
@@ -142,7 +148,8 @@ class TestSItem(TestBase):
         Returns: A list of child SItems
         """
         parentParams:   List[str] = ['&Edit']
-        childrenParams: List[List[str]] = [
+        ParamType = List[Union[List[str], List[Collection[str]], List[Union[str, Tuple[str], dict[str, Any]]]]]
+        childrenParams: ParamType = [
             ['  Cu&t\tCtrl+X'],
             ['  &Copy\tCtrl+C'],
             ['  &Paste\tCtrl+V'],
