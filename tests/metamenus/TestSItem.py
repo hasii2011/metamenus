@@ -1,4 +1,5 @@
 
+from typing import Collection
 from typing import Union
 from typing import Any
 from typing import List
@@ -6,7 +7,7 @@ from typing import Tuple
 from typing import cast
 
 from collections import namedtuple
-from collections import Collection
+
 
 from logging import Logger
 from logging import getLogger
@@ -169,12 +170,11 @@ class TestSItem(TestBase):
 
 
 def suite() -> TestSuite:
-    """You need to change the name of the test class here also."""
     import unittest
 
     testSuite: TestSuite = TestSuite()
-    # noinspection PyUnresolvedReferences
-    testSuite.addTest(unittest.makeSuite(TestSItem))
+
+    testSuite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(testCaseClass=TestSItem))
 
     return testSuite
 

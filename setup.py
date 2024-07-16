@@ -9,7 +9,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="metamenus",
-    version="0.14.4",
+    version="0.14.5",
     author='E.A. Tacao',
     author_email='mailto@tacao.com.br',
     maintainer='Humberto Sanchez II',

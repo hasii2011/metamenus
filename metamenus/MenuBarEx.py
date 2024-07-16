@@ -43,7 +43,7 @@ class MenuBarEx(BaseMenuEx, MenuBar):
         strippedKWArgs = self._extractKeyWordValues(**kwargs)
         MenuBar.__init__(self, **strippedKWArgs)
 
-        # A reference to all of the sItems involved.
+        # A reference to all the sItems involved.
         tops = []
 
         # 'fix' for https://github.com/wxWidgets/Phoenix/issues/1648

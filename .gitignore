@@ -4,6 +4,8 @@ __pycache__/
 /html/
 build/
 dist/
+.mypy_cache
 /metamenus.egg-info/
-/pyenv-venv-3.9.7/
-/pyenv-venv-metamenu-check/
+/pyenv-3.11.5/
+.envrc
+.python-version
