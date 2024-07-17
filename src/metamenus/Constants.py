@@ -1,4 +1,10 @@
 
+from wx.lib.newevent import NewCommandEvent
+
+# Events -----------------------------------------------------------------------
+
+(MenuExBeforeEvent, EVT_BEFOREMENU) = NewCommandEvent()
+(MenuExAfterEvent,  EVT_AFTERMENU)  = NewCommandEvent()
 
 META_MENUS_LOGGING_NAME: str = 'metamenus'
 # More info on 'history' and 'README.md' files.

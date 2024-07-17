@@ -12,7 +12,7 @@ changeToProjectRoot
 
 clear
 
-# python3 setup.py sdist bdist_wheel
+# python3 setup-OBSOLETE.py sdist bdist_wheel
 python3 -m build --sdist --wheel
 
 # Check package

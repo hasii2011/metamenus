@@ -34,7 +34,8 @@
 from logging import Logger
 from logging import getLogger
 
-from metamenus import use_unidecode
+from unidecode import unidecode
+
 from metamenus.BaseMenuEx import BaseMenuEx
 
 from metamenus.Constants import META_MENUS_LOGGING_NAME
@@ -45,20 +46,21 @@ def _clean(s):
     Internal use only. Tries to remove all accented characters from a string.
     """
 
-    if use_unidecode:
-        # noinspection PyUnresolvedReferences
-        s = unidecode.unidecode("".join([x for x in s if x.isalnum()]))
-
-    else:
-        # noinspection SpellCheckingInspection
-        so = "áàãâäéèêëíìîïóòõôöúùûüçýÿÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÔÖÚÙÛÜÇÝ"
-        # noinspection SpellCheckingInspection
-        sd = "áàãâäéèêëíìîïóòõôöúùûüçýÿÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÔÖÚÙÛÜÇÝ"
-
-        for i, char in enumerate(so):
-            if char in s:
-                s = s.replace(char, sd[i])
-        s = "".join([x for x in s if x.isalnum()])
+    s = unidecode("".join([x for x in s if x.isalnum()]))
+    # if use_unidecode:
+    #     # noinspection PyUnresolvedReferences
+    #     s = unidecode.unidecode("".join([x for x in s if x.isalnum()]))
+    #
+    # else:
+    #     # noinspection SpellCheckingInspection
+    #     so = "áàãâäéèêëíìîïóòõôöúùûüçýÿÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÔÖÚÙÛÜÇÝ"
+    #     # noinspection SpellCheckingInspection
+    #     sd = "áàãâäéèêëíìîïóòõôöúùûüçýÿÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÔÖÚÙÛÜÇÝ"
+    #
+    #     for i, char in enumerate(so):
+    #         if char in s:
+    #             s = s.replace(char, sd[i])
+    #     s = "".join([x for x in s if x.isalnum()])
 
     return s
 
