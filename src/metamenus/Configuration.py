@@ -2,17 +2,17 @@
 from logging import Logger
 from logging import getLogger
 
-from metamenus.Singleton import Singleton
+from codeallybasic.SingletonV3 import SingletonV3
 
 
-class Configuration(Singleton):
+class Configuration(metaclass=SingletonV3):
 
     DEFAULT_INDENTATION:      str  = 2 * ' '
     DEFAULT_MENU_BAR_PREFIX:  str  = 'OnMB_'
     DEFAULT_MENU_PREFIX:      str  = 'OnM_'
     DEFAULT_VERBOSE_WARNINGS: bool = True
 
-    def init(self):
+    def __init__(self):
 
         self.logger: Logger = getLogger(__name__)
 
@@ -71,5 +71,5 @@ class Configuration(Singleton):
         return self._verboseWarnings
 
     @verboseWarnings.setter
-    def verboseWarnings(self, newValue: bool) :
+    def verboseWarnings(self, newValue: bool):
         self._verboseWarnings = newValue
