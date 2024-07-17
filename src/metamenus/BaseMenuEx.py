@@ -47,6 +47,7 @@ class BaseMenuEx:
 
     @classmethod
     def evolve(cls, menuBarDescriptor: MenuBarDescriptor) -> "SItem":
+        # noinspection SpellCheckingInspection
         """
 
         Internal use only. This will parse the supplied menu 'tree'.
@@ -152,7 +153,7 @@ class BaseMenuEx:
             else:
                 # but "bmp" may also be a string to evoke ArtProvider Ids
                 checked = kwargs["bmp"]
-                if type(checked) == str:
+                if type(checked) is str:
                     try:
                         import wx  # The eval depends on this import;  Ugh
                         ArtID = eval("wx.ART_" + checked.upper())

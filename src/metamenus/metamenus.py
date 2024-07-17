@@ -47,20 +47,6 @@ def _clean(s):
     """
 
     s = unidecode("".join([x for x in s if x.isalnum()]))
-    # if use_unidecode:
-    #     # noinspection PyUnresolvedReferences
-    #     s = unidecode.unidecode("".join([x for x in s if x.isalnum()]))
-    #
-    # else:
-    #     # noinspection SpellCheckingInspection
-    #     so = "áàãâäéèêëíìîïóòõôöúùûüçýÿÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÔÖÚÙÛÜÇÝ"
-    #     # noinspection SpellCheckingInspection
-    #     sd = "áàãâäéèêëíìîïóòõôöúùûüçýÿÁÀÃÂÄÉÈÊËÍÌÎÏÓÒÕÔÖÚÙÛÜÇÝ"
-    #
-    #     for i, char in enumerate(so):
-    #         if char in s:
-    #             s = s.replace(char, sd[i])
-    #     s = "".join([x for x in s if x.isalnum()])
 
     return s
 
@@ -154,7 +140,7 @@ class _mmPrep:
                 lines.append(top.GetLabelText())
                 for child in top.GetChildren(True):
                     lines.append(child.GetLabelText())
-        except(ValueError, Exception) as e:
+        except (ValueError, Exception) as e:
             self.logger.error(f'{e}')
             parseError = True
 

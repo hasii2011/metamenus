@@ -164,7 +164,7 @@ class TestSItem(TestBase):
 
             childSItem = parentSItem.AddChild(childSItem)
             sItems.append(childSItem)
-        self.logger.warning(f'{sItems}')
+        self.logger.debug(f'{sItems}')
 
         return sItems
 

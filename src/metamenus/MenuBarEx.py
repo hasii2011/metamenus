@@ -12,15 +12,16 @@ from wx import PostEvent
 # noinspection PyUnresolvedReferences
 from wx.core import DEFAULT
 
-# TODO ask tacao if we can avoid using these
+# TODO Can avoid using these
 # noinspection PyProtectedMember
 from wx._core import wxAssertionError
 
-from metamenus import MenuExAfterEvent
-from metamenus import MenuExBeforeEvent
-
 from metamenus.BaseMenuEx import BaseMenuEx
+
 from metamenus.Constants import META_MENUS_LOGGING_NAME
+from metamenus.Constants import MenuExAfterEvent
+from metamenus.Constants import MenuExBeforeEvent
+
 from metamenus.SItem import SItem
 
 from metamenus.metamenus import _clean

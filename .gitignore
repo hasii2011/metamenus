@@ -5,7 +5,7 @@ __pycache__/
 build/
 dist/
 .mypy_cache
-/metamenus.egg-info/
+src/metamenus.egg-info/
 /pyenv-3.11.5/
 .envrc
 .python-version

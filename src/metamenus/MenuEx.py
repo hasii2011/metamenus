@@ -13,15 +13,14 @@ from wx import PostEvent
 # noinspection PyUnresolvedReferences
 from wx.core import DEFAULT
 
-# TODO ask tacao if we can avoid using these
+# TODO Can avoid using these
 # noinspection PyProtectedMember
 from wx._core import wxAssertionError
 
-from metamenus import MenuExAfterEvent
-from metamenus import MenuExBeforeEvent
-
 from metamenus.BaseMenuEx import BaseMenuEx
 from metamenus.Constants import META_MENUS_LOGGING_NAME
+from metamenus.Constants import MenuExAfterEvent
+from metamenus.Constants import MenuExBeforeEvent
 from metamenus.SItem import SItem
 
 
@@ -197,8 +196,7 @@ class MenuEx(Menu, BaseMenuEx):
         changes.
 
         This method never seems to be called from the demo programs.  Which
-        is probably why `MenuIds` un-resolved does not matter;  Talk to
-        tacao;  -- Humberto
+        is probably why `MenuIds` un-resolved does not matter;
         """
 
         if not self._i18n:
@@ -214,7 +212,7 @@ class MenuEx(Menu, BaseMenuEx):
     def Popup(self, evt):
         """Pops this menu up."""
 
-        [self.Check(i, v) for i, v in self.MenuState.items() \
+        [self.Check(i, v) for i, v in self.MenuState.items()
          if self.FindItemById(i).IsCheckable()]
 
         obj = evt.GetEventObject()
