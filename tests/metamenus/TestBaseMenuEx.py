@@ -88,7 +88,7 @@ class TestBaseMenuEx(TestBase):
     def testEvolveFileMenuBar(self):
         try:
             for mb in TestBaseMenuEx.testFileMenuBarDescriptor:
-                top: SItem = BaseMenuEx.evolve(menuBarDescriptor=mb)
+                top: SItem = BaseMenuEx.evolve(menuBarDescriptor=mb)        # type: ignore
 
                 self.assertIsNotNone(top, 'We should get something')
 
@@ -105,7 +105,7 @@ class TestBaseMenuEx(TestBase):
 
     def testEvolveFileMenuBarChildren(self):
         for mb in TestBaseMenuEx.testFileMenuBarDescriptor:
-            top: SItem = BaseMenuEx.evolve(menuBarDescriptor=mb)
+            top: SItem = BaseMenuEx.evolve(menuBarDescriptor=mb)        # type: ignore
 
             self.assertIsNotNone(top, 'We should get something')
 
@@ -120,7 +120,7 @@ class TestBaseMenuEx(TestBase):
     def testEvolveOptionsMenuBar(self):
 
         for mb in TestBaseMenuEx.testOptionsMenuBarDescriptor:
-            top: SItem = BaseMenuEx.evolve(menuBarDescriptor=mb)
+            top: SItem = BaseMenuEx.evolve(menuBarDescriptor=mb)    # type: ignore
 
             self.assertIsNotNone(top, 'We should get something')
 
@@ -130,8 +130,8 @@ class TestBaseMenuEx(TestBase):
 
     def testEvolveDeepMenuBar(self):
 
-        mb: MenuBarDescriptor = TestBaseMenuEx.testDeepMenuBarDescriptor[0]
-        top: SItem            = BaseMenuEx.evolve(menuBarDescriptor=mb)
+        mb:  MenuBarDescriptor = TestBaseMenuEx.testDeepMenuBarDescriptor[0]    # type: ignore
+        top: SItem             = BaseMenuEx.evolve(menuBarDescriptor=mb)
 
         self.assertIsNotNone(top, 'We should get something for our deep menu')
 

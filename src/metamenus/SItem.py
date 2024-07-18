@@ -17,8 +17,9 @@ from wx import ITEM_RADIO
 from wx import NewIdRef
 from wx import GetTranslation
 from wx import Platform
+from wx import WindowIDRef
 
-# TODO ask tacao if we can avoid using these
+# TODO Can we avoid using these
 # noinspection PyProtectedMember
 from wx._core import ItemKind
 
@@ -32,7 +33,7 @@ from metamenus.Constants import META_MENUS_LOGGING_NAME
 
 
 SItems      = NewType('SItems', List["SItem"])
-MethodNames = NewType('MethodNames', Dict[str, int])
+MethodNames = NewType('MethodNames', Dict[str, WindowIDRef])
 
 SPECIAL_EXIT_MENU_TEXT:  str = 'Exit'
 SPECIAL_QUIT_MENU_TEXT:  str = 'Quit'
@@ -61,8 +62,8 @@ class SItem:
         self._methodName: str  = ''
         self._allMethods: MethodNames = MethodNames({})
 
+        self._id: WindowIDRef = self._assignMenuId()
         self.Update()
-        self._id: int = self._assignMenuId()
 
     def _adjust(self, params):
         """
@@ -76,21 +77,21 @@ class SItem:
         kwargs = {}
         params = params + [None] * (3 - len(params))
 
-        if type(params[1]) == tuple:
+        if type(params[1]) is tuple:
             args = params[1]
         elif type(params[1]) in [str, int, ItemKind]:
-            args = (params[1],)
-        elif type(params[1]) == dict:
+            args = (params[1],)                         # type: ignore
+        elif type(params[1]) is dict:
             kwargs = params[1]
 
-        if type(params[2]) == tuple:
+        if type(params[2]) is tuple:
             args = params[2]
         elif type(params[2]) in [str, int, ItemKind]:
-            args = (params[2],)
-        elif type(params[2]) == dict:
+            args = (params[2],)                         # type: ignore
+        elif type(params[2]) is dict:
             kwargs = params[2]
 
-        args = list(args) + [""] * (2 - len(args))
+        args = list(args) + [""] * (2 - len(args))      # type: ignore
 
         # For those who believe wx.UPPERCASE_STUFF_IS_UGLY... 8^)
         kind_conv = {"radio":  ITEM_RADIO,
@@ -98,17 +99,17 @@ class SItem:
                      "normal": ITEM_NORMAL}
         # ...well, these strings look more compact.
 
-        if args[0] in list(kind_conv.keys()) + list(kind_conv.values()):
-            args = (args[1], args[0])
+        if args[0] in list(kind_conv.keys()) + list(kind_conv.values()):    # type: ignore
+            args = (args[1], args[0])                                       # type: ignore
 
         kind_conv.update({"normal": None, "": None})
 
-        if type(args[1]) in [str]:
-            kind = kind_conv.get(args[1])
+        if type(args[1]) in [str]:                                          # type: ignore
+            kind = kind_conv.get(args[1])                                   # type: ignore
             if kind is not None:
-                args = (args[0], kind)
+                args = (args[0], kind)                                      # type: ignore
             else:
-                args = (args[0],)
+                args = (args[0],)                                           # type: ignore
 
         return params[0], tuple(args), kwargs
 
@@ -176,7 +177,7 @@ class SItem:
     def GetAccelerator(self) -> str:
         return self._accelerator
 
-    def GetId(self) -> int:
+    def GetId(self) -> WindowIDRef:
         return self._id
 
     def GetParams(self):
@@ -271,7 +272,7 @@ class SItem:
     def GetAllMethods(self) -> MethodNames:
         return self._allMethods
 
-    def _assignMenuId(self) -> int:
+    def _assignMenuId(self) -> WindowIDRef:
         """
         Ideally, I would like to know that this SItem has a parent
         or not in order to use the special OS X identifiers

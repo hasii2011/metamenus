@@ -70,9 +70,9 @@ class MenuEx(Menu, BaseMenuEx):
 
         # Now find out what are the methods that should be called upon
         # menu items selection.
-        self.MenuIds = {}
-        self.MenuStrings = {}
-        self.MenuList = []
+        self.MenuIds     = {}
+        self.MenuStrings = {}       # type: ignore
+        self.MenuList    = []
         for child in top.GetChildren(True):
             Id = child.GetId()
             item = self.FindItemById(Id)
@@ -152,6 +152,7 @@ class MenuEx(Menu, BaseMenuEx):
                 attr_name = attr.GetMethod()
 
                 if callable(attr_name):
+                    # noinspection PyCallingNonCallable
                     attr_name()
                 elif hasattr(self._parent, attr_name) and callable(getattr(self._parent, attr_name)):
                     getattr(self._parent, attr_name)()
@@ -190,24 +191,24 @@ class MenuEx(Menu, BaseMenuEx):
         evt = MenuExAfterEvent(-1, obj=self, item=attr_name)
         PostEvent(self, evt)
 
-    def UpdateMenus(self):
-        """
-        Call this to update menu labels whenever the current locale
-        changes.
-
-        This method never seems to be called from the demo programs.  Which
-        is probably why `MenuIds` un-resolved does not matter;
-        """
-
-        if not self._i18n:
-            return
-
-        # noinspection PyUnresolvedReferences
-        for k, v in MenuIds.items():
-            item = self.FindItemById(k)
-            if item is not None:   # Skip separators
-                v.Update()
-                self.SetLabel(k, v.GetRealLabel(self._i18n))
+    # def UpdateMenus(self):
+    #     """
+    #     Call this to update menu labels whenever the current locale
+    #     changes.
+    #
+    #     This method never seems to be called from the demo programs.  Which
+    #     is probably why `MenuIds` un-resolved does not matter;
+    #     """
+    #
+    #     if not self._i18n:
+    #         return
+    #
+    #     # noinspection PyUnresolvedReferences
+    #     for k, v in MenuIds.items():
+    #         item = self.FindItemById(k)
+    #         if item is not None:   # Skip separators
+    #             v.Update()
+    #             self.SetLabel(k, v.GetRealLabel(self._i18n))
 
     def Popup(self, evt):
         """Pops this menu up."""

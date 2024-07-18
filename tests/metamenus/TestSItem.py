@@ -127,7 +127,7 @@ class TestSItem(TestBase):
         methodNames: MethodNames = childSItem.GetAllMethods()
         self.logger.debug(f'{methodNames=}')
 
-        expectedMethodNames: List[str] = [f'{TEST_METHOD_NAME_PREFIX}OptionsFoo', 'OptionsFoo', None]
+        expectedMethodNames: List[str] = [f'{TEST_METHOD_NAME_PREFIX}OptionsFoo', 'OptionsFoo', None]   # type: ignore
         for methodName in methodNames.keys():
             self.assertIn(methodName, expectedMethodNames, 'Missing method name')
 

@@ -118,7 +118,7 @@ class _mmPrep:
 
         except (ValueError, Exception) as e:
             self.logger.error(f'File {output_file}.py was NOT written.')
-            self.logger.error(f'{e.strerror} {e.errno} {e.filename}')
+            self.logger.error(f'{e}')
 
     def form(self, lines):
         """Removes separators and breaks and adds gettext stuff."""

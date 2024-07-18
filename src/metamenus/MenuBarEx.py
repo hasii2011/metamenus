@@ -1,6 +1,9 @@
 
 from logging import Logger
 from logging import getLogger
+from typing import Dict
+from typing import NewType
+from typing import cast
 
 from wx import EVT_MENU
 
@@ -8,6 +11,7 @@ from wx import Menu
 from wx import MenuBar
 
 from wx import PostEvent
+from wx import WindowIDRef
 
 # noinspection PyUnresolvedReferences
 from wx.core import DEFAULT
@@ -26,6 +30,11 @@ from metamenus.SItem import SItem
 
 from metamenus.metamenus import _clean
 
+No_Window_ID_Ref = cast(WindowIDRef, None)
+
+MBStringToWindowIdRef = NewType('MBStringToWindowIdRef', Dict[str, WindowIDRef])
+WindowIdRefToSItem    = NewType('WindowIdRefToSItem',    Dict[WindowIDRef, SItem])
+
 
 class MenuBarEx(BaseMenuEx, MenuBar):
     """
@@ -34,8 +43,7 @@ class MenuBarEx(BaseMenuEx, MenuBar):
     def __init__(self, *args, **kwargs):
         # noinspection SpellCheckingInspection
         """
-        MenuBarEx(parent, menus, margin=wx.DEFAULT, font=wx.NullFont,
-        customMethods=CustomMethods({}), i18n=True, style=0)
+        MenuBarEx(parent, menus, margin=wx.DEFAULT, font=wx.NullFont, customMethods=CustomMethods({}), i18n=True, style=0)
         """
         BaseMenuEx.__init__(self, *args, **kwargs)
 
@@ -81,8 +89,8 @@ class MenuBarEx(BaseMenuEx, MenuBar):
 
         # Now find out what are the methods that should be called upon
         # menu items selection.
-        MBIds = {}
-        self.MBStrings = {}
+        MBIds: WindowIdRefToSItem = WindowIdRefToSItem({})
+        self.MBStrings = MBStringToWindowIdRef({})
         for top in tops:
             for child in top.GetChildren(True):
                 # noinspection SpellCheckingInspection
@@ -92,8 +100,7 @@ class MenuBarEx(BaseMenuEx, MenuBar):
                 self.MBStrings.update(child.GetAllMethods())
 
         # It won't hurt if we get rid of a None key, if any.
-        # noinspection PyUnusedLocal
-        bogus = self.MBStrings.pop(None, None)
+        self.MBStrings.pop(No_Window_ID_Ref)
 
         # We store the position of top-level menus rather than ids because
         # wx.Menu.EnableTop uses positions...
@@ -106,7 +113,7 @@ class MenuBarEx(BaseMenuEx, MenuBar):
         self._parent.Bind(EVT_MENU, self.OnMB_)
 
         # Now do something about the IDs and accelerators...
-        self.MBIds = MBIds
+        self.MBIds: WindowIdRefToSItem = MBIds
 
     def OnMB_(self, evt):
         """
@@ -123,6 +130,7 @@ class MenuBarEx(BaseMenuEx, MenuBar):
                 attr_name = attr.GetMethod()
 
                 if callable(attr_name):
+                    # noinspection PyCallingNonCallable
                     attr_name()
                 elif hasattr(self._parent, attr_name) and callable(getattr(self._parent, attr_name)):
                     getattr(self._parent, attr_name)()
@@ -154,7 +162,7 @@ class MenuBarEx(BaseMenuEx, MenuBar):
         triggered, you can bind the EVT_AFTERMENU.
         """
 
-        evt = MenuExAfterEvent(-1, obj=self, item=attr_name)
+        evt: MenuExAfterEvent = MenuExAfterEvent(-1, obj=self, item=attr_name)
         PostEvent(self, evt)
 
     def UpdateMenus(self):
