@@ -355,10 +355,10 @@ This code should meet the wxPython Coding Guidelines
 <http://wiki.wxpython.org/index.cgi/wxPython_20Style_20Guide>.
 
 ## Note: 
-tacao does not maintain this fork.  I think I have to keep the following text to comply with the
-BSD-3 license.
+tacao does not maintain this fork.  
 
 For all kind of problems, requests, enhancements, bug reports, etc,
 please drop me an e-mail.
 
-For updates please visit <https://www.tacao.com.br>.
+Maintainer  <a href="mailto:email@humberto.a.sanchez.ii@gmail.com?subject=Hello Humberto">Humberto A. Sanchez II</a>  (C) 2024
+
