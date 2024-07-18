@@ -341,18 +341,6 @@ A very default 'File' menu example:
         ['  E&xit\tAlt+X']
        ]
 
-# Known Issues:
-
-- Phoenix keeps accelerators active even for disabled top menus.
-    (for 4.0.7p2 gtk2 on Linux)
-
-# About:
-
-metamenus is licensed under the BSD-3-Clause License.
-
-This code should meet the wxPython Coding Guidelines
-<http://www.wxpython.org/codeguidelines.php> and the wxPython Style Guide
-<http://wiki.wxpython.org/index.cgi/wxPython_20Style_20Guide>.
 
 ## Note: 
 tacao does not maintain this fork.  
